@@ -55,6 +55,22 @@ export const configurator: MantineDemo = {
   controls: [
     {
       type: 'segmented',
+      prop: 'selectionMode',
+      initialValue: 'click',
+      libraryValue: 'click',
+      data: [
+        { value: 'click', label: 'Click' },
+        { value: 'hover', label: 'Hover' },
+      ],
+    },
+    {
+      type: 'boolean',
+      prop: 'withWheel',
+      initialValue: false,
+      libraryValue: false,
+    },
+    {
+      type: 'segmented',
       prop: 'orientation',
       initialValue: 'horizontal',
       libraryValue: 'horizontal',

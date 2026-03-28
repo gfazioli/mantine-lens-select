@@ -20,7 +20,7 @@
 .track {
   display: flex;
   align-items: flex-end;
-  gap: var(--ls-gap, 2px);
+  gap: var(--ls-gap, 10px);
   position: relative;
   touch-action: none;
 
@@ -67,13 +67,13 @@
 
 .itemPill {
   width: 100%;
-  height: var(--ls-pill-height, 60%);
+  height: var(--ls-pill-height, 100%);
   border-radius: var(--ls-pill-radius, 256px);
   background-color: var(--ls-pill-color, var(--mantine-color-dimmed));
   transition: background-color var(--ls-transition-duration, 200ms) ease-out;
 
   [data-orientation='vertical'] & {
-    width: var(--ls-pill-height, 60%);
+    width: var(--ls-pill-height, 100%);
     height: 100%;
   }
 

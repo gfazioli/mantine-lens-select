@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Box,
   BoxProps,
@@ -93,6 +93,12 @@ export interface LensSelectBaseProps {
   /** Gap between items, `2` by default. Supports responsive values. */
   gap?: StyleProp<number | string>;
 
+  /** How items are selected: `'click'` (default) requires a click, `'hover'` auto-selects on hover */
+  selectionMode?: 'click' | 'hover';
+
+  /** Enable mouse wheel navigation, `false` by default. When active in hover mode, hover only applies the visual effect — selection is driven by the wheel. */
+  withWheel?: boolean;
+
   /** Enable wrap-around navigation, `false` by default */
   loop?: boolean;
 
@@ -165,11 +171,13 @@ const defaultProps: Partial<LensSelectProps> = {
   opacityRange: [0.4, 1],
   blurRange: [0, 3],
   itemSize: 24,
-  gap: 2,
+  gap: 10,
+  selectionMode: 'click',
+  withWheel: false,
   loop: false,
   transitionDuration: 200,
-  withIndicator: false,
-  pillHeight: '60%',
+  withIndicator: true,
+  pillHeight: '100%',
   pillWidth: 4,
   pillRadius: 'xl',
   indicatorSize: 6,
@@ -248,6 +256,8 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
     blurRange,
     itemSize,
     gap,
+    selectionMode,
+    withWheel,
     loop,
     transitionDuration,
     renderItem,
@@ -314,7 +324,21 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
   const itemSizePx = typeof baseItemSize === 'number' ? baseItemSize : 24;
   const maxRange = (lensRange ?? 3) * itemSizePx;
 
-  const updateScaleFactors = useCallback(
+  const isHoverMode = selectionMode === 'hover';
+  const autoSelectOnHover = isHoverMode && !withWheel;
+
+  // Compute scale factors centered on a specific item index (for wheel mode)
+  const computeIndexBasedFactors = useCallback(
+    (centerIndex: number) =>
+      items.map((_item, i) => {
+        const distance = Math.abs(i - centerIndex) * itemSizePx;
+        return computeLensFactor(distance, maxRange);
+      }),
+    [items, itemSizePx, maxRange]
+  );
+
+  // Compute scale factors based on cursor position (for hover/click mode)
+  const updateScaleFactorsFromCursor = useCallback(
     (cursorPos: number) => {
       const track = internalTrackRef.current;
       if (!track) {
@@ -335,34 +359,70 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
       });
 
       setScaleFactors(newFactors);
+
+      // In hover mode without wheel, auto-select the item closest to cursor
+      if (autoSelectOnHover) {
+        let maxFactor = 0;
+        let maxIndex = -1;
+        newFactors.forEach((f, i) => {
+          if (f > maxFactor) {
+            maxFactor = f;
+            maxIndex = i;
+          }
+        });
+        if (maxIndex >= 0 && items[maxIndex].value !== _value) {
+          handleChange(items[maxIndex].value);
+        }
+      }
     },
-    [items, orientation, maxRange]
+    [items, orientation, maxRange, autoSelectOnHover, _value, handleChange]
   );
+
+  // In wheel mode: show genius effect on selected item when hovering
+  const wheelHovering = isHoverMode && withWheel;
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent) => {
-      const pos = orientation === 'horizontal' ? e.clientX : e.clientY;
-      updateScaleFactors(pos);
-      if (!isHovering) {
-        setIsHovering(true);
+      if (wheelHovering) {
+        // In hover+wheel: no cursor-based effect, just mark as hovering
+        if (!isHovering) {
+          setIsHovering(true);
+          setScaleFactors(computeIndexBasedFactors(activeIndex));
+        }
+      } else {
+        const pos = orientation === 'horizontal' ? e.clientX : e.clientY;
+        updateScaleFactorsFromCursor(pos);
+        if (!isHovering) {
+          setIsHovering(true);
+        }
       }
     },
-    [orientation, updateScaleFactors, isHovering]
+    [
+      wheelHovering,
+      orientation,
+      updateScaleFactorsFromCursor,
+      isHovering,
+      activeIndex,
+      computeIndexBasedFactors,
+    ]
   );
 
   const handleTouchMove = useCallback(
     (e: React.TouchEvent) => {
+      if (wheelHovering) {
+        return;
+      }
       const touch = e.touches[0];
       if (!touch) {
         return;
       }
       const pos = orientation === 'horizontal' ? touch.clientX : touch.clientY;
-      updateScaleFactors(pos);
+      updateScaleFactorsFromCursor(pos);
       if (!isHovering) {
         setIsHovering(true);
       }
     },
-    [orientation, updateScaleFactors, isHovering]
+    [wheelHovering, orientation, updateScaleFactorsFromCursor, isHovering]
   );
 
   const handleMouseLeave = useCallback(() => {
@@ -407,6 +467,47 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
     },
     [orientation, activeIndex, navigateTo, items.length]
   );
+
+  // Wheel navigation — same pattern as DepthSelect: simple deltaY + cooldown
+  const navigateToRef = useRef(navigateTo);
+  const activeIndexRef = useRef(activeIndex);
+  const computeFactorsRef = useRef(computeIndexBasedFactors);
+  const setScaleFactorsRef = useRef(setScaleFactors);
+  navigateToRef.current = navigateTo;
+  activeIndexRef.current = activeIndex;
+  computeFactorsRef.current = computeIndexBasedFactors;
+  setScaleFactorsRef.current = setScaleFactors;
+
+  useEffect(() => {
+    const node = rootRef.current;
+    if (!node || !withWheel) {
+      return;
+    }
+
+    let cooldown = false;
+    const duration = transitionDuration || 200;
+
+    const handleWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (cooldown || Math.abs(event.deltaY) < 5) {
+        return;
+      }
+      cooldown = true;
+      const idx = activeIndexRef.current;
+      const nextIdx = event.deltaY > 0 ? idx + 1 : idx - 1;
+      navigateToRef.current(nextIdx);
+      setScaleFactorsRef.current(computeFactorsRef.current(nextIdx));
+      setTimeout(() => {
+        cooldown = false;
+      }, duration);
+    };
+
+    node.addEventListener('wheel', handleWheel, { passive: false });
+    return () => {
+      node.removeEventListener('wheel', handleWheel);
+    };
+  }, [withWheel, transitionDuration]);
 
   const getItemStyle = useCallback(
     (index: number): React.CSSProperties => {
@@ -512,7 +613,7 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
                 data-active={isActive || undefined}
                 data-pill={item.view == null && !renderItem ? true : undefined}
                 data-index={index}
-                onClick={() => handleChange(item.value)}
+                onClick={selectionMode === 'click' ? () => handleChange(item.value) : undefined}
               >
                 {renderItem
                   ? renderItem(item, {

@@ -161,14 +161,14 @@ describe('LensSelect', () => {
 
   // Indicator
 
-  it('renders indicator when withIndicator is true', () => {
-    const { container } = render(<LensSelect data={TEST_DATA} withIndicator />);
+  it('renders indicator by default', () => {
+    const { container } = render(<LensSelect data={TEST_DATA} />);
     const indicator = container.querySelector('.mantine-LensSelect-indicator');
     expect(indicator).toBeTruthy();
   });
 
-  it('does not render indicator by default', () => {
-    const { container } = render(<LensSelect data={TEST_DATA} />);
+  it('does not render indicator when withIndicator is false', () => {
+    const { container } = render(<LensSelect data={TEST_DATA} withIndicator={false} />);
     const indicator = container.querySelector('.mantine-LensSelect-indicator');
     expect(indicator).toBeNull();
   });

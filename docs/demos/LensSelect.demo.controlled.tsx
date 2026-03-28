@@ -18,7 +18,7 @@ function Demo() {
   const [value, setValue] = useState<string | number>(6);
 
   return (
-    <Stack align="center" gap="xl">
+    <Stack align="center" gap="xl" pt={80}>
       <LensSelect data={data} value={value} onChange={setValue} withIndicator />
       <Text size="sm">Selected: {String(value)}</Text>
       <Slider
@@ -39,7 +39,7 @@ function Demo() {
   const [value, setValue] = useState<string | number>(6);
 
   return (
-    <Stack align="center" gap="xl">
+    <Stack align="center" gap="xl" pt={80}>
       <LensSelect data={SAMPLE_DATA} value={value} onChange={setValue} withIndicator />
       <Text size="sm">Selected: {String(value)}</Text>
       <Slider

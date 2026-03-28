@@ -36,7 +36,7 @@ export const LensSelectIndicator = factory<LensSelectIndicatorFactory>((_props, 
   // In pill mode, each item is pillWidth wide; otherwise itemSize
   const slotSize = ctx.isPillMode ? 'var(--ls-pill-width, 4px)' : 'var(--ls-item-size, 24px)';
 
-  const offset = `calc(${activeIndex} * (${slotSize} + var(--ls-gap, 2px)) + ${slotSize} / 2)`;
+  const offset = `calc(${activeIndex} * (${slotSize} + var(--ls-gap, 10px)) + ${slotSize} / 2)`;
 
   const indicatorStyle: React.CSSProperties = isVertical
     ? { transform: `translateY(${offset})` }
