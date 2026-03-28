@@ -46,8 +46,8 @@ function Demo() {
         radius="lg"
         withBorder
         style={{
-          backgroundColor: 'color-mix(in srgb, var(--mantine-color-gray-4) 60%, transparent)',
-          borderColor: 'var(--mantine-color-gray-5)',
+          backgroundColor: 'light-dark(color-mix(in srgb, var(--mantine-color-gray-3) 60%, transparent), color-mix(in srgb, var(--mantine-color-gray-8) 20%, transparent))',
+          borderColor: 'light-dark(var(--mantine-color-gray-4), var(--mantine-color-gray-7))',
           backdropFilter: 'blur(20px)',
         }}
       >
@@ -60,7 +60,7 @@ function Demo() {
           magnification={2.5}
           lensRange={3}
           expandOnHover
-          renderItem={(item) => (
+          renderItem={(item, { active }) => (
             <Box
               style={{
                 width: '100%',
@@ -69,7 +69,7 @@ function Demo() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 10,
-                background: 'linear-gradient(145deg, var(--mantine-color-dark-4), var(--mantine-color-dark-6))',
+                background: active ? 'var(--mantine-color-blue-6)' : 'light-dark(var(--mantine-color-blue-1), var(--mantine-color-gray-8))',
                 fontSize: 24,
                 lineHeight: 1,
                 cursor: 'pointer',
@@ -99,8 +99,9 @@ function Demo() {
         radius="lg"
         withBorder
         style={{
-          backgroundColor: 'color-mix(in srgb, var(--mantine-color-gray-4) 60%, transparent)',
-          borderColor: 'var(--mantine-color-gray-5)',
+          backgroundColor:
+            'light-dark(color-mix(in srgb, var(--mantine-color-gray-3) 60%, transparent), color-mix(in srgb, var(--mantine-color-gray-8) 20%, transparent))',
+          borderColor: 'light-dark(var(--mantine-color-gray-4), var(--mantine-color-gray-7))',
           backdropFilter: 'blur(20px)',
         }}
       >
@@ -122,7 +123,9 @@ function Demo() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 10,
-                background: active ? 'var(--mantine-color-blue-6)' : 'var(--mantine-color-blue-3)',
+                background: active
+                  ? 'var(--mantine-color-blue-6)'
+                  : 'light-dark(var(--mantine-color-gray-0), var(--mantine-color-gray-8))',
                 fontSize: 24,
                 lineHeight: 1,
                 cursor: 'pointer',
