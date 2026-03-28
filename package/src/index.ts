@@ -8,6 +8,11 @@ export type {
   LensSelectItem,
   LensSelectProps,
   LensSelectStylesNames,
+  LensSelectVariant,
 } from './LensSelect';
 export type { LensSelectOrientation } from './LensSelect.context';
-export type { LensSelectIndicatorFactory, LensSelectIndicatorProps } from './LensSelectIndicator';
+export type {
+  LensSelectIndicatorFactory,
+  LensSelectIndicatorProps,
+  LensSelectIndicatorVariant,
+} from './LensSelectIndicator';

@@ -19,18 +19,37 @@ import '@gfazioli/mantine-lens-select/styles.layer.css';
 
 ## Usage
 
-The `LensSelect` component displays a list of items with a fisheye/lens magnification effect on hover — similar to the macOS Dock. Items near the cursor scale up, creating an interactive selection experience.
+The `LensSelect` component displays a list of items with a
+fisheye/lens magnification effect on hover — similar to
+the macOS Dock. Items near the cursor scale up, creating
+an interactive selection experience.
 
 <Demo data={demos.configurator} />
 
 ## Controlled
 
-The `LensSelect` component supports both controlled and uncontrolled modes via `value`/`defaultValue` and `onChange`:
+The `LensSelect` component supports both controlled and
+uncontrolled modes via `value`/`defaultValue` and `onChange`:
 
 <Demo data={demos.controlled} />
 
+## Variants
+
+Both `LensSelect` and `LensSelect.Indicator` support
+`default` and `outline` variants. The `outline` variant
+renders pills and indicator with borders only (transparent
+fill). Use `LensSelect.Indicator` as an explicit child to
+control its variant independently:
+
+<Demo data={demos.variants} />
+
 ## Styles API
 
-`LensSelect` supports [Styles API](https://mantine.dev/styles/styles-api/), you can add styles to any inner element of the component with `classNames` prop. Follow [Styles API](https://mantine.dev/styles/styles-api/) documentation to learn more.
+`LensSelect` supports
+[Styles API](https://mantine.dev/styles/styles-api/), you
+can add styles to any inner element of the component with
+`classNames` prop. Follow
+[Styles API](https://mantine.dev/styles/styles-api/)
+documentation to learn more.
 
 <Demo data={demos.stylesApi} />

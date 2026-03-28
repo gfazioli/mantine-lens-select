@@ -55,6 +55,16 @@ export const configurator: MantineDemo = {
   controls: [
     {
       type: 'segmented',
+      prop: 'variant',
+      initialValue: 'default',
+      libraryValue: 'default',
+      data: [
+        { value: 'default', label: 'Default' },
+        { value: 'outline', label: 'Outline' },
+      ],
+    },
+    {
+      type: 'segmented',
       prop: 'selectionMode',
       initialValue: 'click',
       libraryValue: 'click',
@@ -180,30 +190,6 @@ export const configurator: MantineDemo = {
       prop: 'activeColor',
       initialValue: 'blue',
       libraryValue: 'blue',
-    },
-    {
-      type: 'color',
-      prop: 'indicatorColor',
-      initialValue: 'blue',
-      libraryValue: 'blue',
-    },
-    {
-      type: 'number',
-      prop: 'indicatorSize',
-      initialValue: 6,
-      libraryValue: 6,
-      min: 2,
-      max: 16,
-      step: 1,
-    },
-    {
-      type: 'number',
-      prop: 'indicatorOffset',
-      initialValue: 16,
-      libraryValue: 16,
-      min: 4,
-      max: 32,
-      step: 2,
     },
     {
       type: 'boolean',

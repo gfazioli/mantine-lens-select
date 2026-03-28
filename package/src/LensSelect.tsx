@@ -18,7 +18,7 @@ import {
 } from '@mantine/core';
 import { useMergedRef, useUncontrolled } from '@mantine/hooks';
 import { LensSelectProvider, type LensSelectOrientation } from './LensSelect.context';
-import { LensSelectIndicator } from './LensSelectIndicator';
+import { LensSelectIndicator, type LensSelectIndicatorProps } from './LensSelectIndicator';
 import { LensSelectMediaVariables } from './LensSelectMediaVariables';
 import classes from './LensSelect.module.css';
 
@@ -29,6 +29,8 @@ export interface LensSelectItem {
   /** Content rendered inside the item. When omitted, a default pill (rounded rectangle) is rendered. */
   view?: React.ReactNode;
 }
+
+export type LensSelectVariant = 'default' | 'outline';
 
 export type LensSelectStylesNames = 'root' | 'track' | 'item' | 'itemPill' | 'indicator';
 
@@ -44,10 +46,7 @@ export type LensSelectCssVariables = {
     | '--ls-pill-radius'
     | '--ls-pill-color'
     | '--ls-pill-color-hover'
-    | '--ls-pill-color-active'
-    | '--ls-indicator-size'
-    | '--ls-indicator-color'
-    | '--ls-indicator-offset';
+    | '--ls-pill-color-active';
 };
 
 export interface LensSelectBaseProps {
@@ -132,14 +131,8 @@ export interface LensSelectBaseProps {
   /** Color of the active pill and indicator, uses theme primary by default */
   activeColor?: MantineColor;
 
-  /** Color of the indicator dot, defaults to `activeColor` or theme primary */
-  indicatorColor?: MantineColor;
-
-  /** Diameter of the indicator dot in px, `6` by default. Supports responsive values. */
-  indicatorSize?: StyleProp<number>;
-
-  /** Distance between the indicator and the pills in px, `16` by default. Supports responsive values. */
-  indicatorOffset?: StyleProp<number>;
+  /** Props passed to the built-in LensSelect.Indicator when `withIndicator` is true */
+  indicatorProps?: LensSelectIndicatorProps;
 
   /** Accessible label for the component */
   ariaLabel?: string;
@@ -155,6 +148,7 @@ export type LensSelectFactory = Factory<{
   props: LensSelectProps;
   ref: HTMLDivElement;
   stylesNames: LensSelectStylesNames;
+  variant: LensSelectVariant;
   vars: LensSelectCssVariables;
   staticComponents: {
     Indicator: typeof LensSelectIndicator;
@@ -162,6 +156,7 @@ export type LensSelectFactory = Factory<{
 }>;
 
 const defaultProps: Partial<LensSelectProps> = {
+  variant: 'default',
   orientation: 'horizontal',
   magnification: 2,
   lensRange: 3,
@@ -180,24 +175,13 @@ const defaultProps: Partial<LensSelectProps> = {
   pillHeight: '100%',
   pillWidth: 4,
   pillRadius: 'xl',
-  indicatorSize: 6,
-  indicatorOffset: 16,
   ariaLabel: 'Lens select',
 };
 
 const varsResolver = createVarsResolver<LensSelectFactory>(
   (
     theme,
-    {
-      transitionDuration,
-      magnification,
-      lensRange,
-      pillRadius,
-      pillColor,
-      hoverColor,
-      activeColor,
-      indicatorColor,
-    }
+    { transitionDuration, magnification, lensRange, pillRadius, pillColor, hoverColor, activeColor }
   ) => ({
     root: {
       '--ls-transition-duration': `${transitionDuration}ms`,
@@ -207,19 +191,12 @@ const varsResolver = createVarsResolver<LensSelectFactory>(
       '--ls-pill-color': pillColor ? getThemeColor(pillColor, theme) : undefined,
       '--ls-pill-color-hover': hoverColor ? getThemeColor(hoverColor, theme) : undefined,
       '--ls-pill-color-active': activeColor ? getThemeColor(activeColor, theme) : undefined,
-      '--ls-indicator-color': indicatorColor
-        ? getThemeColor(indicatorColor, theme)
-        : activeColor
-          ? getThemeColor(activeColor, theme)
-          : undefined,
-      // Responsive vars (itemSize, gap, pillHeight, pillWidth, indicatorSize, indicatorOffset)
+      // Responsive vars (itemSize, gap, pillHeight, pillWidth)
       // are handled by LensSelectMediaVariables
       '--ls-item-size': undefined as unknown as string,
       '--ls-gap': undefined as unknown as string,
       '--ls-pill-height': undefined as unknown as string,
       '--ls-pill-width': undefined as unknown as string,
-      '--ls-indicator-size': undefined as unknown as string,
-      '--ls-indicator-offset': undefined as unknown as string,
     },
   })
 );
@@ -268,11 +245,10 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
     pillColor: _pillColor,
     hoverColor: _hoverColor,
     activeColor: _activeColor,
-    indicatorColor: _indicatorColor,
-    indicatorSize: _indicatorSize,
-    indicatorOffset: _indicatorOffset,
+    indicatorProps,
     ariaLabel,
     children,
+    variant,
     classNames,
     style,
     styles,
@@ -572,8 +548,6 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
         gap={gap}
         pillHeight={_pillHeight}
         pillWidth={_pillWidth}
-        indicatorSize={_indicatorSize}
-        indicatorOffset={_indicatorOffset}
         selector={`.${responsiveClassName}`}
       />
       <Box
@@ -581,6 +555,7 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
         {...getStyles('root', { className: responsiveClassName })}
         {...others}
         mod={[{ orientation }, mod]}
+        data-variant={variant}
         role="listbox"
         aria-label={ariaLabel}
         aria-orientation={orientation}
@@ -632,7 +607,7 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
             );
           })}
         </Box>
-        {withIndicator && <LensSelectIndicator />}
+        {withIndicator && <LensSelectIndicator {...indicatorProps} />}
         {children}
       </Box>
     </LensSelectProvider>

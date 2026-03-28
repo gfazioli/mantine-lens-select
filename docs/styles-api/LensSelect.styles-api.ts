@@ -23,13 +23,16 @@ export const LensSelectStylesApi: StylesApiData<LensSelectFactory> = {
       '--ls-pill-color': 'Controls the color of inactive pills',
       '--ls-pill-color-hover': 'Controls the color of hovered (non-active) pills',
       '--ls-pill-color-active': 'Controls the color of the active pill',
-      '--ls-indicator-size': 'Controls the diameter of the indicator dot',
-      '--ls-indicator-color': 'Controls the color of the indicator',
-      '--ls-indicator-offset': 'Controls the distance between indicator and pills',
     },
   },
 
   modifiers: [
+    {
+      modifier: 'data-variant',
+      selector: 'root',
+      value: 'default | outline',
+      condition: 'Based on `variant` prop',
+    },
     {
       modifier: 'data-orientation',
       selector: 'root',
@@ -40,6 +43,22 @@ export const LensSelectStylesApi: StylesApiData<LensSelectFactory> = {
       modifier: 'data-active',
       selector: 'item',
       condition: 'Item is currently selected',
+    },
+    {
+      modifier: 'data-pill',
+      selector: 'item',
+      condition: 'Item uses default pill rendering (no `view` provided)',
+    },
+    {
+      modifier: 'data-hovered',
+      selector: 'itemPill',
+      condition: 'Pill is under cursor but not selected',
+    },
+    {
+      modifier: 'data-variant',
+      selector: 'indicator',
+      value: 'default | outline',
+      condition: 'Based on `LensSelect.Indicator` `variant` prop',
     },
   ],
 };

@@ -65,12 +65,18 @@
   }
 }
 
+/* ============================================
+   PILL — default variant (filled)
+   ============================================ */
+
 .itemPill {
   width: 100%;
   height: var(--ls-pill-height, 100%);
   border-radius: var(--ls-pill-radius, 256px);
   background-color: var(--ls-pill-color, var(--mantine-color-dimmed));
-  transition: background-color var(--ls-transition-duration, 200ms) ease-out;
+  transition:
+    background-color var(--ls-transition-duration, 200ms) ease-out,
+    border-color var(--ls-transition-duration, 200ms) ease-out;
 
   [data-orientation='vertical'] & {
     width: var(--ls-pill-height, 100%);
@@ -86,6 +92,26 @@
   }
 }
 
+/* Outline variant — border only, transparent fill */
+[data-variant='outline'] .itemPill {
+  background-color: transparent;
+  border: 1px solid var(--ls-pill-color, var(--mantine-color-dimmed));
+
+  &[data-hovered] {
+    background-color: transparent;
+    border-color: var(--ls-pill-color-hover, var(--mantine-primary-color-light));
+  }
+
+  &[data-active] {
+    background-color: transparent;
+    border-color: var(--ls-pill-color-active, var(--mantine-primary-color-filled));
+  }
+}
+
+/* ============================================
+   INDICATOR
+   ============================================ */
+
 .indicator {
   pointer-events: none;
   transition: transform var(--ls-transition-duration, 200ms) ease-out;
@@ -100,6 +126,12 @@
     background-color: var(--ls-indicator-color, var(--mantine-primary-color-filled));
     display: block;
     margin-left: calc(var(--ls-indicator-size, 6px) / -2);
+  }
+
+  /* Outline variant — circle border, transparent fill */
+  &[data-variant='outline'] > span {
+    background-color: transparent;
+    border: 1.5px solid var(--ls-indicator-color, var(--mantine-primary-color-filled));
   }
 
   &[data-orientation='vertical'] {
