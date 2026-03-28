@@ -1,17 +1,17 @@
-# Mantine Led Component
+# Mantine Lens Select Component
 
-<img alt="Mantine Led" src="https://github.com/gfazioli/mantine-led/blob/master/logo.jpeg" />
+<img alt="Mantine Lens Select" src="https://github.com/gfazioli/mantine-lens-select/blob/master/logo.jpeg" />
 
 <div align="center">
 
-  [![NPM version](https://img.shields.io/npm/v/%40gfazioli%2Fmantine-led?style=for-the-badge)](https://www.npmjs.com/package/@gfazioli/mantine-led)
-  [![NPM Downloads](https://img.shields.io/npm/dm/%40gfazioli%2Fmantine-led?style=for-the-badge)](https://www.npmjs.com/package/@gfazioli/mantine-led)
-  [![NPM Downloads](https://img.shields.io/npm/dy/%40gfazioli%2Fmantine-led?style=for-the-badge&label=%20&color=f90)](https://www.npmjs.com/package/@gfazioli/mantine-led)
-  ![NPM License](https://img.shields.io/npm/l/%40gfazioli%2Fmantine-led?style=for-the-badge)
+  [![NPM version](https://img.shields.io/npm/v/%40gfazioli%2Fmantine-lens-select?style=for-the-badge)](https://www.npmjs.com/package/@gfazioli/mantine-lens-select)
+  [![NPM Downloads](https://img.shields.io/npm/dm/%40gfazioli%2Fmantine-lens-select?style=for-the-badge)](https://www.npmjs.com/package/@gfazioli/mantine-lens-select)
+  [![NPM Downloads](https://img.shields.io/npm/dy/%40gfazioli%2Fmantine-lens-select?style=for-the-badge&label=%20&color=f90)](https://www.npmjs.com/package/@gfazioli/mantine-lens-select)
+  ![NPM License](https://img.shields.io/npm/l/%40gfazioli%2Fmantine-lens-select?style=for-the-badge)
 
 ---
 
-[<kbd> <br/> ❤️ If this component has been useful to you or your team, please consider becoming a sponsor <br/> </kbd>](https://github.com/sponsors/gfazioli?o=esc)  
+[<kbd> <br/> If this component has been useful to you or your team, please consider becoming a sponsor <br/> </kbd>](https://github.com/sponsors/gfazioli?o=esc)
 
 </div>
 
@@ -19,48 +19,58 @@
 
 This component is created on top of the [Mantine](https://mantine.dev/) library.
 
-The [Mantine Led](https://gfazioli.github.io/mantine-led/) component is a highly customizable LED indicator for React applications built with Mantine. It provides visual feedback for status indicators, notifications, and interactive elements with support for various colors, sizes, animations, and states.
+The [Mantine Lens Select](https://gfazioli.github.io/mantine-lens-select/) component is a fisheye/lens magnification select for React applications built with Mantine. It displays a list of items with a macOS Dock-like magnification effect on hover, where items near the cursor scale up creating an interactive and visually engaging selection experience.
 
 ## Features
 
-- 🎨 **Theme Integration**: Full Mantine theme support with all theme colors
-- 📐 **Flexible Sizing**: Supports all Mantine sizes plus custom values
-- ✨ **Rich Animations**: Multiple animation types (pulse, flash, breathe, blink, glow)
-- 🎭 **Visual Variants**: Flat and 3D rendering styles
-- 🏷️ **Label Support**: Optional labels with configurable positioning
-- 🎛️ **Controlled State**: Full control over the LED on/off state
-- ♿ **Accessibility**: Follows WAI-ARIA best practices
-- 🎨 **Styles API**: Extensive styling customization support
-- 📦 **TypeScript**: Full type safety out of the box
+- Fisheye/lens magnification effect on hover (macOS Dock-like)
+- Horizontal and vertical orientation support
+- Configurable magnification, lens range, scale, opacity, and blur effects
+- Controlled and uncontrolled modes via value/defaultValue/onChange
+- Keyboard navigation (Arrow keys, Home, End) with optional loop
+- Mouse wheel and touch/swipe navigation
+- Custom item rendering via renderItem callback
+- LensSelect.Indicator compound component for selection indicator
+- Full Mantine Styles API support
+- WAI-ARIA listbox pattern for accessibility
+- GPU-optimized with targeted will-change
+- TypeScript — full type safety out of the box
 
 > [!note]
 >
-> → [Demo and Documentation](https://gfazioli.github.io/mantine-led/) → [Youtube Video](https://www.youtube.com/playlist?list=PL85tTROKkZrWyqCcmNCdWajpx05-cTal4) → [More Mantine Components](https://mantine-extensions.vercel.app/)
+> [Demo and Documentation](https://gfazioli.github.io/mantine-lens-select/) | [More Mantine Components](https://mantine-extensions.vercel.app/)
 
 ## Installation
 
 ```sh
-npm install @gfazioli/mantine-led
+npm install @gfazioli/mantine-lens-select
 ```
-or 
+or
 
 ```sh
-yarn add @gfazioli/mantine-led
+yarn add @gfazioli/mantine-lens-select
 ```
 
 After installation import package styles at the root of your application:
 
 ```tsx
-import '@gfazioli/mantine-led/styles.css';
+import '@gfazioli/mantine-lens-select/styles.css';
 ```
 
 ## Usage
 
 ```tsx
-import { Led } from '@gfazioli/mantine-led';
+import { LensSelect } from '@gfazioli/mantine-lens-select';
+
+const data = [
+  { value: 'home', view: 'Home' },
+  { value: 'search', view: 'Search' },
+  { value: 'mail', view: 'Mail' },
+  { value: 'settings', view: 'Settings' },
+];
 
 function Demo() {
-  return  <Led />;
+  return <LensSelect data={data} withIndicator />;
 }
 ```
 
@@ -68,25 +78,24 @@ function Demo() {
 
 <div align="center">
 
-[<kbd> <br/> ❤️ If this component has been useful to you or your team, please consider becoming a sponsor <br/> </kbd>](https://github.com/sponsors/gfazioli?o=esc)
+[<kbd> <br/> If this component has been useful to you or your team, please consider becoming a sponsor <br/> </kbd>](https://github.com/sponsors/gfazioli?o=esc)
 
 </div>
 
 Your support helps me:
 
-- Keep the project actively maintained with timely bug fixes and security updates	
-- Add new features, improve performance, and refine the developer experience	
-- Expand test coverage and documentation for smoother adoption	
-- Ensure long‑term sustainability without relying on ad hoc free time	
+- Keep the project actively maintained with timely bug fixes and security updates
+- Add new features, improve performance, and refine the developer experience
+- Expand test coverage and documentation for smoother adoption
+- Ensure long-term sustainability without relying on ad hoc free time
 - Prioritize community requests and roadmap items that matter most
 
-Open source thrives when those who benefit can give back—even a small monthly contribution makes a real difference. Sponsorships help cover maintenance time, infrastructure, and the countless invisible tasks that keep a project healthy.
+Open source thrives when those who benefit can give back - even a small monthly contribution makes a real difference. Sponsorships help cover maintenance time, infrastructure, and the countless invisible tasks that keep a project healthy.
 
 Your help truly matters.
 
-💚 [Become a sponsor](https://github.com/sponsors/gfazioli?o=esc) today and help me keep this project reliable, up‑to‑date, and growing for everyone.
+[Become a sponsor](https://github.com/sponsors/gfazioli?o=esc) today and help me keep this project reliable, up-to-date, and growing for everyone.
 
 ---
-  
-[![Star History Chart](https://api.star-history.com/svg?repos=gfazioli/mantine-led&type=Timeline)](https://www.star-history.com/#gfazioli/mantine-led&Timeline)
 
+[![Star History Chart](https://api.star-history.com/svg?repos=gfazioli/mantine-lens-select&type=Timeline)](https://www.star-history.com/#gfazioli/mantine-lens-select&Timeline)

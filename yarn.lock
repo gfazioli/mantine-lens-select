@@ -1778,9 +1778,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gfazioli/mantine-led@workspace:*, @gfazioli/mantine-led@workspace:package":
+"@gfazioli/mantine-lens-select@workspace:*, @gfazioli/mantine-lens-select@workspace:package":
   version: 0.0.0-use.local
-  resolution: "@gfazioli/mantine-led@workspace:package"
+  resolution: "@gfazioli/mantine-lens-select@workspace:package"
   peerDependencies:
     "@mantine/core": ">=7.0.0"
     "@mantine/hooks": ">=7.0.0"
@@ -7682,7 +7682,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "extension-template-docs@workspace:docs"
   dependencies:
-    "@gfazioli/mantine-led": "workspace:*"
+    "@gfazioli/mantine-lens-select": "workspace:*"
     "@mantine/code-highlight": "npm:8.3.18"
     "@mantine/core": "npm:8.3.18"
     "@mantine/hooks": "npm:8.3.18"

@@ -5,7 +5,10 @@ const getComponentPath = (componentPath: string) =>
   path.join(process.cwd(), 'package/src', componentPath);
 
 generateDeclarations({
-  componentsPaths: [getComponentPath('Led.tsx')],
+  componentsPaths: [
+    getComponentPath('LensSelect.tsx'),
+    getComponentPath('LensSelectIndicator.tsx'),
+  ],
   tsConfigPath: path.join(process.cwd(), 'tsconfig.json'),
   outputPath: path.join(process.cwd(), 'docs'),
 });

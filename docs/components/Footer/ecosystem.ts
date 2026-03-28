@@ -37,9 +37,9 @@ export const ecosystem = [
     newWindow: true,
   },
   {
-    key: 'mantine-led',
-    title: 'Mantine Led',
-    href: 'https://gfazioli.github.io/mantine-led',
+    key: 'mantine-lens-select',
+    title: 'Mantine Lens Select',
+    href: 'https://gfazioli.github.io/mantine-lens-select',
     newWindow: true,
   },
   {
