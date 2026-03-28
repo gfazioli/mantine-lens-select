@@ -24,6 +24,8 @@ export const LensSelectStylesApi: StylesApiData<LensSelectFactory> = {
       '--ls-pill-color': 'Controls the color of inactive pills',
       '--ls-pill-color-hover': 'Controls the color of hovered (non-active) pills',
       '--ls-pill-color-active': 'Controls the color of the active pill',
+      '--ls-easing':
+        'Controls the transition easing function (linear, ease-out, ease-in-out, spring, or custom)',
     },
   },
 

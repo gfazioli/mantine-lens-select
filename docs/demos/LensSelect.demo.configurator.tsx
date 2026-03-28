@@ -188,5 +188,17 @@ export const configurator: MantineDemo = {
       max: 1000,
       step: 50,
     },
+    {
+      type: 'select',
+      prop: 'easing',
+      initialValue: 'ease-out',
+      libraryValue: 'ease-out',
+      data: [
+        { value: 'linear', label: 'Linear' },
+        { value: 'ease-out', label: 'Ease Out' },
+        { value: 'ease-in-out', label: 'Ease In Out' },
+        { value: 'spring', label: 'Spring' },
+      ],
+    },
   ],
 };

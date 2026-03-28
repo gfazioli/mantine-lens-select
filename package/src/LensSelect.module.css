@@ -70,9 +70,9 @@
   height: 100%;
   transform-origin: bottom center;
   transition:
-    transform var(--ls-transition-duration, 200ms) ease-out,
-    opacity var(--ls-transition-duration, 200ms) ease-out,
-    filter var(--ls-transition-duration, 200ms) ease-out;
+    transform var(--ls-transition-duration, 200ms) var(--ls-easing, ease-out),
+    opacity var(--ls-transition-duration, 200ms) var(--ls-easing, ease-out),
+    filter var(--ls-transition-duration, 200ms) var(--ls-easing, ease-out);
 
   [data-orientation='vertical'] & {
     transform-origin: center right;
@@ -89,8 +89,8 @@
   border-radius: var(--ls-pill-radius, 256px);
   background-color: var(--ls-pill-color, var(--mantine-color-dimmed));
   transition:
-    background-color var(--ls-transition-duration, 200ms) ease-out,
-    border-color var(--ls-transition-duration, 200ms) ease-out;
+    background-color var(--ls-transition-duration, 200ms) var(--ls-easing, ease-out),
+    border-color var(--ls-transition-duration, 200ms) var(--ls-easing, ease-out);
 
   [data-orientation='vertical'] & {
     width: var(--ls-pill-height, 100%);
@@ -128,7 +128,7 @@
 
 .indicator {
   pointer-events: none;
-  transition: transform var(--ls-transition-duration, 200ms) ease-out;
+  transition: transform var(--ls-transition-duration, 200ms) var(--ls-easing, ease-out);
   display: flex;
   align-self: flex-start;
   margin-top: var(--ls-indicator-offset, 16px);

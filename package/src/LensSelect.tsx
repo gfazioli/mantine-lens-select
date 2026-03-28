@@ -52,7 +52,8 @@ export type LensSelectCssVariables = {
     | '--ls-pill-radius'
     | '--ls-pill-color'
     | '--ls-pill-color-hover'
-    | '--ls-pill-color-active';
+    | '--ls-pill-color-active'
+    | '--ls-easing';
 };
 
 export interface LensSelectBaseProps {
@@ -112,6 +113,9 @@ export interface LensSelectBaseProps {
 
   /** Transition duration in ms, `200` by default */
   transitionDuration?: number;
+
+  /** Transition easing function, `'ease-out'` by default. Presets: `'linear'`, `'ease-out'`, `'ease-in-out'`, `'spring'`, or a custom `cubic-bezier(...)` string. */
+  easing?: 'linear' | 'ease-out' | 'ease-in-out' | 'spring' | (string & {});
 
   /** Custom render function for each item */
   renderItem?: (
@@ -176,6 +180,7 @@ const defaultProps: Partial<LensSelectProps> = {
   blurRange: [0, 3],
   itemSize: 24,
   gap: 10,
+  easing: 'ease-out',
   expandOnHover: false,
   selectionMode: 'click',
   withWheel: false,
@@ -191,24 +196,42 @@ const defaultProps: Partial<LensSelectProps> = {
 const varsResolver = createVarsResolver<LensSelectFactory>(
   (
     theme,
-    { transitionDuration, magnification, lensRange, pillRadius, pillColor, hoverColor, activeColor }
-  ) => ({
-    root: {
-      '--ls-transition-duration': `${transitionDuration}ms`,
-      '--ls-magnification': String(magnification),
-      '--ls-range': String(lensRange),
-      '--ls-pill-radius': pillRadius !== undefined ? getRadius(pillRadius) : undefined,
-      '--ls-pill-color': pillColor ? getThemeColor(pillColor, theme) : undefined,
-      '--ls-pill-color-hover': hoverColor ? getThemeColor(hoverColor, theme) : undefined,
-      '--ls-pill-color-active': activeColor ? getThemeColor(activeColor, theme) : undefined,
-      // Responsive vars (itemSize, gap, pillHeight, pillWidth)
-      // are handled by LensSelectMediaVariables
-      '--ls-item-size': undefined as unknown as string,
-      '--ls-gap': undefined as unknown as string,
-      '--ls-pill-height': undefined as unknown as string,
-      '--ls-pill-width': undefined as unknown as string,
-    },
-  })
+    {
+      transitionDuration,
+      easing,
+      magnification,
+      lensRange,
+      pillRadius,
+      pillColor,
+      hoverColor,
+      activeColor,
+    }
+  ) => {
+    const EASING_MAP: Record<string, string> = {
+      linear: 'linear',
+      'ease-out': 'ease-out',
+      'ease-in-out': 'ease-in-out',
+      spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+    };
+    const resolvedEasing = easing ? (EASING_MAP[easing] ?? easing) : undefined;
+
+    return {
+      root: {
+        '--ls-transition-duration': `${transitionDuration}ms`,
+        '--ls-easing': resolvedEasing,
+        '--ls-magnification': String(magnification),
+        '--ls-range': String(lensRange),
+        '--ls-pill-radius': pillRadius !== undefined ? getRadius(pillRadius) : undefined,
+        '--ls-pill-color': pillColor ? getThemeColor(pillColor, theme) : undefined,
+        '--ls-pill-color-hover': hoverColor ? getThemeColor(hoverColor, theme) : undefined,
+        '--ls-pill-color-active': activeColor ? getThemeColor(activeColor, theme) : undefined,
+        '--ls-item-size': undefined as unknown as string,
+        '--ls-gap': undefined as unknown as string,
+        '--ls-pill-height': undefined as unknown as string,
+        '--ls-pill-width': undefined as unknown as string,
+      },
+    };
+  }
 );
 
 /**
@@ -248,6 +271,7 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
     withWheel,
     loop,
     transitionDuration,
+    easing,
     renderItem,
     withIndicator,
     pillHeight: _pillHeight,

@@ -60,6 +60,7 @@ function Demo() {
           magnification={2.5}
           lensRange={3}
           expandOnHover
+          easing="linear"
           renderItem={(item, { active }) => (
             <Box
               style={{
@@ -114,6 +115,7 @@ function Demo() {
           magnification={2.5}
           lensRange={3}
           expandOnHover
+          easing="linear"
           renderItem={(item, { active }) => (
             <Box
               style={{
