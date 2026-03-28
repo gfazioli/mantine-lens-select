@@ -35,18 +35,15 @@
   height: var(--ls-item-size, 24px);
   flex-shrink: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   cursor: pointer;
   user-select: none;
-  transform-origin: bottom center;
-  transition:
-    transform var(--ls-transition-duration, 200ms) ease-out,
-    opacity var(--ls-transition-duration, 200ms) ease-out,
-    filter var(--ls-transition-duration, 200ms) ease-out;
+  overflow: visible;
 
   [data-orientation='vertical'] > & {
-    transform-origin: center right;
+    align-items: center;
+    justify-content: flex-end;
   }
 
   /* Pill mode: item collapses to pill dimensions */
@@ -62,6 +59,23 @@
 
   &[data-active] {
     /* Active item marker — can be styled via Styles API */
+  }
+}
+
+.itemContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  transform-origin: bottom center;
+  transition:
+    transform var(--ls-transition-duration, 200ms) ease-out,
+    opacity var(--ls-transition-duration, 200ms) ease-out,
+    filter var(--ls-transition-duration, 200ms) ease-out;
+
+  [data-orientation='vertical'] & {
+    transform-origin: center right;
   }
 }
 
@@ -147,7 +161,7 @@
 }
 
 @media (prefers-reduced-motion) {
-  .item {
+  .itemContent {
     transition: none;
   }
 }

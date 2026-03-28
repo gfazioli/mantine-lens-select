@@ -1,3 +1,4 @@
+import React from 'react';
 import { createSafeContext, type GetStylesApi } from '@mantine/core';
 import type { LensSelectFactory, LensSelectItem } from './LensSelect';
 
@@ -14,6 +15,10 @@ export interface LensSelectContextValue {
   isHovering: boolean;
   /** Whether items are rendered as pills (no custom view) */
   isPillMode: boolean;
+  /** Ref to the track element */
+  trackRef: React.RefObject<HTMLDivElement | null>;
+  /** Refs to each item element */
+  itemRefs: React.MutableRefObject<(HTMLDivElement | null)[]>;
 }
 
 export const [LensSelectProvider, useLensSelectContext] = createSafeContext<LensSelectContextValue>(

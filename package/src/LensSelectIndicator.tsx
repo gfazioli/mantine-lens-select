@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Box,
   BoxProps,
@@ -57,17 +57,53 @@ export const LensSelectIndicator = factory<LensSelectIndicatorFactory>((_props, 
     [ctx.items, ctx.activeValue]
   );
 
+  // Track the real DOM position of the active item relative to the track
+  const [indicatorOffset, setIndicatorOffset] = useState(0);
+
+  useEffect(() => {
+    if (activeIndex < 0) {
+      return;
+    }
+
+    const updatePosition = () => {
+      const track = ctx.trackRef.current;
+      const activeEl = ctx.itemRefs.current[activeIndex];
+      if (!track || !activeEl) {
+        return;
+      }
+
+      const trackRect = track.getBoundingClientRect();
+      const itemRect = activeEl.getBoundingClientRect();
+      const isVertical = ctx.orientation === 'vertical';
+
+      if (isVertical) {
+        setIndicatorOffset(itemRect.top - trackRect.top + itemRect.height / 2);
+      } else {
+        setIndicatorOffset(itemRect.left - trackRect.left + itemRect.width / 2);
+      }
+    };
+
+    // Update immediately and on each animation frame while hovering
+    updatePosition();
+
+    // Use a RAF loop to keep in sync with CSS transitions
+    let rafId: number;
+    const loop = () => {
+      updatePosition();
+      rafId = requestAnimationFrame(loop);
+    };
+    rafId = requestAnimationFrame(loop);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+    };
+  }, [activeIndex, ctx.trackRef, ctx.itemRefs, ctx.orientation, ctx.scaleFactors]);
+
   if (activeIndex < 0) {
     return null;
   }
 
   const isVertical = ctx.orientation === 'vertical';
-
-  // In pill mode, each item is pillWidth wide; otherwise itemSize
-  const slotSize = ctx.isPillMode ? 'var(--ls-pill-width, 4px)' : 'var(--ls-item-size, 24px)';
-
-  const translateOffset = `calc(${activeIndex} * (${slotSize} + var(--ls-gap, 10px)) + ${slotSize} / 2)`;
-
   const sizePx = `${size}px`;
   const offsetPx = `${offset}px`;
   const resolvedColor = color ? getThemeColor(color, theme) : undefined;
@@ -76,7 +112,7 @@ export const LensSelectIndicator = factory<LensSelectIndicatorFactory>((_props, 
     '--ls-indicator-size': sizePx,
     '--ls-indicator-offset': offsetPx,
     ...(resolvedColor ? { '--ls-indicator-color': resolvedColor } : {}),
-    transform: isVertical ? `translateY(${translateOffset})` : `translateX(${translateOffset})`,
+    transform: isVertical ? `translateY(${indicatorOffset}px)` : `translateX(${indicatorOffset}px)`,
   } as React.CSSProperties;
 
   return (

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { LensSelect, type LensSelectItem } from '@gfazioli/mantine-lens-select';
-import { Paper, Stack, Text, Tooltip } from '@mantine/core';
+import { Box, Paper, Stack, Text } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 
 const DOCK_APPS: LensSelectItem[] = [
@@ -19,7 +19,7 @@ const DOCK_APPS: LensSelectItem[] = [
 const code = `
 import { useState } from 'react';
 import { LensSelect } from '@gfazioli/mantine-lens-select';
-import { Paper, Stack, Text, Tooltip } from '@mantine/core';
+import { Box, Paper, Stack, Text } from '@mantine/core';
 
 const apps = [
   { value: 'finder', view: '📁' },
@@ -40,12 +40,13 @@ function Demo() {
   return (
     <Stack align="center" gap="md">
       <Paper
-        p="xs"
-        radius="lg"
+        p="sm"
+        radius="xl"
         withBorder
         style={{
-          backgroundColor: 'var(--mantine-color-dark-7)',
+          backgroundColor: 'color-mix(in srgb, var(--mantine-color-dark-7) 80%, transparent)',
           borderColor: 'var(--mantine-color-dark-4)',
+          backdropFilter: 'blur(20px)',
         }}
       >
         <LensSelect
@@ -53,15 +54,27 @@ function Demo() {
           value={active}
           onChange={setActive}
           itemSize={48}
-          gap={6}
-          magnification={1.8}
+          gap={4}
+          magnification={2.5}
           lensRange={3}
-          renderItem={(item, { scale }) => (
-            <Tooltip label={String(item.value)} position="top" withArrow>
-              <span style={{ fontSize: \`\${scale * 24}px\`, lineHeight: 1, cursor: 'pointer' }}>
-                {item.view}
-              </span>
-            </Tooltip>
+          expandOnHover
+          renderItem={(item) => (
+            <Box
+              style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 10,
+                background: 'linear-gradient(145deg, var(--mantine-color-dark-4), var(--mantine-color-dark-6))',
+                fontSize: 24,
+                lineHeight: 1,
+                cursor: 'pointer',
+              }}
+            >
+              {item.view}
+            </Box>
           )}
           indicatorProps={{ size: 4, offset: 8 }}
         />
@@ -78,12 +91,13 @@ function Demo() {
   return (
     <Stack align="center" gap="md">
       <Paper
-        p="xs"
-        radius="lg"
+        p="sm"
+        radius="xl"
         withBorder
         style={{
-          backgroundColor: 'var(--mantine-color-dark-7)',
+          backgroundColor: 'color-mix(in srgb, var(--mantine-color-dark-7) 80%, transparent)',
           borderColor: 'var(--mantine-color-dark-4)',
+          backdropFilter: 'blur(20px)',
         }}
       >
         <LensSelect
@@ -91,15 +105,28 @@ function Demo() {
           value={active}
           onChange={setActive}
           itemSize={48}
-          gap={6}
-          magnification={1.8}
+          gap={4}
+          magnification={2.5}
           lensRange={3}
-          renderItem={(item, { scale }) => (
-            <Tooltip label={String(item.value)} position="top" withArrow>
-              <span style={{ fontSize: `${scale * 24}px`, lineHeight: 1, cursor: 'pointer' }}>
-                {item.view}
-              </span>
-            </Tooltip>
+          expandOnHover
+          renderItem={(item) => (
+            <Box
+              style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 10,
+                background:
+                  'linear-gradient(145deg, var(--mantine-color-dark-4), var(--mantine-color-dark-6))',
+                fontSize: 24,
+                lineHeight: 1,
+                cursor: 'pointer',
+              }}
+            >
+              {item.view}
+            </Box>
           )}
           indicatorProps={{ size: 4, offset: 8 }}
         />

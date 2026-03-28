@@ -32,7 +32,13 @@ export interface LensSelectItem {
 
 export type LensSelectVariant = 'default' | 'outline';
 
-export type LensSelectStylesNames = 'root' | 'track' | 'item' | 'itemPill' | 'indicator';
+export type LensSelectStylesNames =
+  | 'root'
+  | 'track'
+  | 'item'
+  | 'itemContent'
+  | 'itemPill'
+  | 'indicator';
 
 export type LensSelectCssVariables = {
   root:
@@ -91,6 +97,9 @@ export interface LensSelectBaseProps {
 
   /** Gap between items, `10` by default. Supports responsive values. */
   gap?: StyleProp<number | string>;
+
+  /** When true, items push neighbors apart during magnification (macOS Dock style), `false` by default */
+  expandOnHover?: boolean;
 
   /** How items are selected: `'click'` (default) requires a click, `'hover'` auto-selects on hover */
   selectionMode?: 'click' | 'hover';
@@ -167,6 +176,7 @@ const defaultProps: Partial<LensSelectProps> = {
   blurRange: [0, 3],
   itemSize: 24,
   gap: 10,
+  expandOnHover: false,
   selectionMode: 'click',
   withWheel: false,
   loop: false,
@@ -233,6 +243,7 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
     blurRange,
     itemSize,
     gap,
+    expandOnHover,
     selectionMode,
     withWheel,
     loop,
@@ -485,7 +496,7 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
     };
   }, [withWheel, transitionDuration]);
 
-  const getItemStyle = useCallback(
+  const getContentStyle = useCallback(
     (index: number): React.CSSProperties => {
       const factor = scaleFactors[index] ?? 0;
       const mag = magnification ?? 2;
@@ -500,14 +511,11 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
 
       if (withOpacity) {
         const [minO, maxO] = opacityRange ?? [0.4, 1];
-        // When hovering: items near cursor are more opaque
-        // When not hovering: all items at full opacity
         styleObj.opacity = isHovering ? minO + (maxO - minO) * factor : 1;
       }
 
       if (withBlur) {
         const [minB, maxB] = blurRange ?? [0, 3];
-        // Invert: items near cursor have less blur
         const blur = isHovering ? maxB - (maxB - minB) * factor : 0;
         styleObj.filter = `blur(${blur}px)`;
       }
@@ -537,8 +545,10 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
       scaleFactors,
       isHovering,
       isPillMode,
+      trackRef: internalTrackRef,
+      itemRefs,
     }),
-    [getStyles, items, _value, orientation, scaleFactors, isHovering, isPillMode]
+    [getStyles, items, _value, orientation, scaleFactors, isHovering, isPillMode, itemRefs]
   );
 
   return (
@@ -574,6 +584,16 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
           {items.map((item, index) => {
             const isActive = item.value === _value;
             const factor = scaleFactors[index] ?? 0;
+            const mag = magnification ?? 2;
+            const extraSpace =
+              expandOnHover && withScale ? (mag - 1) * factor * itemSizePx * 0.5 : 0;
+            const isHoriz = orientation === 'horizontal';
+            const itemStyle: React.CSSProperties =
+              extraSpace > 0
+                ? isHoriz
+                  ? { marginLeft: extraSpace, marginRight: extraSpace }
+                  : { marginTop: extraSpace, marginBottom: extraSpace }
+                : {};
 
             return (
               <Box
@@ -582,7 +602,7 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
                   itemRefs.current[index] = el;
                 }}
                 {...getStyles('item')}
-                style={getItemStyle(index)}
+                style={itemStyle}
                 role="option"
                 aria-selected={isActive}
                 data-active={isActive || undefined}
@@ -590,19 +610,21 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
                 data-index={index}
                 onClick={selectionMode === 'click' ? () => handleChange(item.value) : undefined}
               >
-                {renderItem
-                  ? renderItem(item, {
-                      active: isActive,
-                      scale: withScale ? 1 + ((magnification ?? 2) - 1) * factor : 1,
-                      hovered: factor > 0,
-                    })
-                  : (item.view ?? (
-                      <Box
-                        {...getStyles('itemPill')}
-                        data-active={isActive || undefined}
-                        data-hovered={!isActive && factor > 0 ? true : undefined}
-                      />
-                    ))}
+                <Box {...getStyles('itemContent')} style={getContentStyle(index)}>
+                  {renderItem
+                    ? renderItem(item, {
+                        active: isActive,
+                        scale: withScale ? 1 + ((magnification ?? 2) - 1) * factor : 1,
+                        hovered: factor > 0,
+                      })
+                    : (item.view ?? (
+                        <Box
+                          {...getStyles('itemPill')}
+                          data-active={isActive || undefined}
+                          data-hovered={!isActive && factor > 0 ? true : undefined}
+                        />
+                      ))}
+                </Box>
               </Box>
             );
           })}

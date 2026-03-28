@@ -117,6 +117,12 @@ export const configurator: MantineDemo = {
       step: 8,
     },
     {
+      type: 'boolean',
+      prop: 'expandOnHover',
+      initialValue: false,
+      libraryValue: false,
+    },
+    {
       type: 'number',
       prop: 'gap',
       initialValue: 10,
