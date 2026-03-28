@@ -14,25 +14,25 @@ const data = Array.from({ length: 10 }, (_, i) => ({ value: i + 1 }));
 
 function Demo() {
   return (
-    <Stack align="center" gap="xl">
-      <Stack align="center" gap="xs">
+    <Stack align="center" gap={60}>
+      <Stack align="center" gap="xl">
         <Text size="sm" fw={500}>Default variant</Text>
         <LensSelect data={data} />
       </Stack>
 
-      <Stack align="center" gap="xs">
+      <Stack align="center" gap="xl">
         <Text size="sm" fw={500}>Outline variant</Text>
         <LensSelect data={data} variant="outline" />
       </Stack>
 
-      <Stack align="center" gap="xs">
+      <Stack align="center" gap="xl">
         <Text size="sm" fw={500}>Outline variant with outline indicator</Text>
         <LensSelect data={data} variant="outline" withIndicator={false}>
           <LensSelect.Indicator variant="outline" />
         </LensSelect>
       </Stack>
 
-      <Stack align="center" gap="xs">
+      <Stack align="center" gap="xl">
         <Text size="sm" fw={500}>Default variant with outline indicator</Text>
         <LensSelect data={data} withIndicator={false}>
           <LensSelect.Indicator variant="outline" />
@@ -45,22 +45,22 @@ function Demo() {
 
 function Demo() {
   return (
-    <Stack align="center" gap="xl">
-      <Stack align="center" gap="xs">
+    <Stack align="center" gap={60}>
+      <Stack align="center" gap="xl">
         <Text size="sm" fw={500}>
           Default variant
         </Text>
         <LensSelect data={SAMPLE_DATA} />
       </Stack>
 
-      <Stack align="center" gap="xs">
+      <Stack align="center" gap="xl">
         <Text size="sm" fw={500}>
           Outline variant
         </Text>
         <LensSelect data={SAMPLE_DATA} variant="outline" />
       </Stack>
 
-      <Stack align="center" gap="xs">
+      <Stack align="center" gap="xl">
         <Text size="sm" fw={500}>
           Outline variant with outline indicator
         </Text>
@@ -69,7 +69,7 @@ function Demo() {
         </LensSelect>
       </Stack>
 
-      <Stack align="center" gap="xs">
+      <Stack align="center" gap="xl">
         <Text size="sm" fw={500}>
           Default variant with outline indicator
         </Text>

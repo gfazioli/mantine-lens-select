@@ -3,7 +3,6 @@ export { controlled } from './LensSelect.demo.controlled';
 export { dock } from './LensSelect.demo.dock';
 export { indicatorConfigurator } from './LensSelect.demo.indicatorConfigurator';
 export { rating } from './LensSelect.demo.rating';
-export { stepProgress } from './LensSelect.demo.stepProgress';
 export { stylesApi } from './LensSelect.demo.stylesApi';
 export { timeline } from './LensSelect.demo.timeline';
 export { variants } from './LensSelect.demo.variants';
