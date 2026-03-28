@@ -19,11 +19,11 @@ export interface LensSelectItem {
   /** Unique value identifying this item */
   value: string | number;
 
-  /** Content rendered inside the item */
-  view: React.ReactNode;
+  /** Content rendered inside the item. When omitted, a default pill (rounded rectangle) is rendered. */
+  view?: React.ReactNode;
 }
 
-export type LensSelectStylesNames = 'root' | 'track' | 'item' | 'indicator';
+export type LensSelectStylesNames = 'root' | 'track' | 'item' | 'itemPill' | 'indicator';
 
 export type LensSelectCssVariables = {
   root:
@@ -446,7 +446,9 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
                       scale: withScale ? 1 + ((magnification ?? 2) - 1) * factor : 1,
                       hovered: factor > 0,
                     })
-                  : item.view}
+                  : (item.view ?? (
+                      <Box {...getStyles('itemPill')} data-active={isActive || undefined} />
+                    ))}
               </Box>
             );
           })}

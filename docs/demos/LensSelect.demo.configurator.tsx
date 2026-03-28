@@ -2,28 +2,36 @@ import { LensSelect, type LensSelectItem } from '@gfazioli/mantine-lens-select';
 import { MantineDemo } from '@mantinex/demo';
 
 const SAMPLE_DATA: LensSelectItem[] = [
-  { value: 'home', view: '🏠' },
-  { value: 'search', view: '🔍' },
-  { value: 'mail', view: '📧' },
-  { value: 'calendar', view: '📅' },
-  { value: 'settings', view: '⚙️' },
-  { value: 'photos', view: '📷' },
-  { value: 'music', view: '🎵' },
-  { value: 'notes', view: '📝' },
+  { value: '1' },
+  { value: '2' },
+  { value: '3' },
+  { value: '4' },
+  { value: '5' },
+  { value: '6' },
+  { value: '7' },
+  { value: '8' },
+  { value: '9' },
+  { value: '10' },
+  { value: '11' },
+  { value: '12' },
 ];
 
 const code = `
 import { LensSelect } from '@gfazioli/mantine-lens-select';
 
 const data = [
-  { value: 'home', view: '🏠' },
-  { value: 'search', view: '🔍' },
-  { value: 'mail', view: '📧' },
-  { value: 'calendar', view: '📅' },
-  { value: 'settings', view: '⚙️' },
-  { value: 'photos', view: '📷' },
-  { value: 'music', view: '🎵' },
-  { value: 'notes', view: '📝' },
+  { value: '1' },
+  { value: '2' },
+  { value: '3' },
+  { value: '4' },
+  { value: '5' },
+  { value: '6' },
+  { value: '7' },
+  { value: '8' },
+  { value: '9' },
+  { value: '10' },
+  { value: '11' },
+  { value: '12' },
 ];
 
 function Demo() {
@@ -108,6 +116,12 @@ export const configurator: MantineDemo = {
       prop: 'withIndicator',
       initialValue: false,
       libraryValue: false,
+    },
+    {
+      type: 'boolean',
+      prop: 'withScrollNavigation',
+      initialValue: true,
+      libraryValue: true,
     },
     {
       type: 'boolean',

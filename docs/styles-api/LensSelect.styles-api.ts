@@ -6,6 +6,7 @@ export const LensSelectStylesApi: StylesApiData<LensSelectFactory> = {
     root: 'Root element — wraps track and indicator',
     track: 'Track element — contains all items in a flex row/column',
     item: 'Individual item element',
+    itemPill: 'Default pill (rounded rectangle) rendered when view is not provided',
     indicator: 'Selection indicator element (dot/line below active item)',
   },
 
