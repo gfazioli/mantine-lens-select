@@ -60,6 +60,7 @@ function Demo() {
           magnification={2.5}
           lensRange={3}
           expandOnHover
+          transitionDuration={0}
           easing="linear"
           renderItem={(item, { active }) => (
             <Box
@@ -115,6 +116,7 @@ function Demo() {
           magnification={2.5}
           lensRange={3}
           expandOnHover
+          transitionDuration={0}
           easing="linear"
           renderItem={(item, { active }) => (
             <Box
