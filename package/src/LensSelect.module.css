@@ -20,7 +20,7 @@
 .track {
   display: flex;
   align-items: flex-end;
-  gap: var(--ls-gap, 8px);
+  gap: var(--ls-gap, 2px);
   position: relative;
   touch-action: none;
 
@@ -31,8 +31,8 @@
 }
 
 .item {
-  width: var(--ls-item-size, 48px);
-  height: var(--ls-item-size, 48px);
+  width: var(--ls-item-size, 24px);
+  height: var(--ls-item-size, 24px);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -49,46 +49,68 @@
     transform-origin: center right;
   }
 
+  /* Pill mode: item collapses to pill dimensions */
+  &[data-pill] {
+    width: var(--ls-pill-width, 4px);
+    height: var(--ls-item-size, 24px);
+  }
+
+  [data-orientation='vertical'] > &[data-pill] {
+    width: var(--ls-item-size, 24px);
+    height: var(--ls-pill-width, 4px);
+  }
+
   &[data-active] {
     /* Active item marker — can be styled via Styles API */
   }
 }
 
 .itemPill {
-  width: 4px;
-  height: 100%;
-  border-radius: 256px;
-  background-color: var(--mantine-color-dimmed);
+  width: 100%;
+  height: var(--ls-pill-height, 60%);
+  border-radius: var(--ls-pill-radius, 256px);
+  background-color: var(--ls-pill-color, var(--mantine-color-dimmed));
   transition: background-color var(--ls-transition-duration, 200ms) ease-out;
 
   [data-orientation='vertical'] & {
-    width: 100%;
-    height: 4px;
+    width: var(--ls-pill-height, 60%);
+    height: 100%;
+  }
+
+  &[data-hovered] {
+    background-color: var(--ls-pill-color-hover, var(--mantine-primary-color-light));
   }
 
   &[data-active] {
-    background-color: var(--mantine-primary-color-filled);
+    background-color: var(--ls-pill-color-active, var(--mantine-primary-color-filled));
   }
 }
 
 .indicator {
+  pointer-events: none;
+  transition: transform var(--ls-transition-duration, 200ms) ease-out;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: var(--mantine-spacing-xs);
-  position: relative;
+  align-self: flex-start;
+  margin-top: var(--ls-indicator-offset, 16px);
 
   & > span {
-    width: 6px;
-    height: 6px;
+    width: var(--ls-indicator-size, 6px);
+    height: var(--ls-indicator-size, 6px);
     border-radius: 50%;
-    background-color: var(--mantine-primary-color-filled);
+    background-color: var(--ls-indicator-color, var(--mantine-primary-color-filled));
     display: block;
+    margin-left: calc(var(--ls-indicator-size, 6px) / -2);
   }
 
   &[data-orientation='vertical'] {
-    padding-top: 0;
-    padding-left: var(--mantine-spacing-xs);
+    margin-top: 0;
+    margin-left: var(--ls-indicator-offset, 16px);
+    align-self: flex-start;
+
+    & > span {
+      margin-left: 0;
+      margin-top: calc(var(--ls-indicator-size, 6px) / -2);
+    }
   }
 }
 

@@ -5,14 +5,21 @@ import {
   createVarsResolver,
   factory,
   Factory,
-  getSize,
+  getBaseValue,
+  getRadius,
+  getThemeColor,
   StylesApiProps,
   useProps,
+  useRandomClassName,
   useStyles,
+  type MantineColor,
+  type MantineRadius,
+  type StyleProp,
 } from '@mantine/core';
-import { useUncontrolled } from '@mantine/hooks';
+import { useMergedRef, useUncontrolled } from '@mantine/hooks';
 import { LensSelectProvider, type LensSelectOrientation } from './LensSelect.context';
 import { LensSelectIndicator } from './LensSelectIndicator';
+import { LensSelectMediaVariables } from './LensSelectMediaVariables';
 import classes from './LensSelect.module.css';
 
 export interface LensSelectItem {
@@ -31,7 +38,16 @@ export type LensSelectCssVariables = {
     | '--ls-item-size'
     | '--ls-magnification'
     | '--ls-range'
-    | '--ls-gap';
+    | '--ls-gap'
+    | '--ls-pill-height'
+    | '--ls-pill-width'
+    | '--ls-pill-radius'
+    | '--ls-pill-color'
+    | '--ls-pill-color-hover'
+    | '--ls-pill-color-active'
+    | '--ls-indicator-size'
+    | '--ls-indicator-color'
+    | '--ls-indicator-offset';
 };
 
 export interface LensSelectBaseProps {
@@ -71,14 +87,11 @@ export interface LensSelectBaseProps {
   /** Min and max blur range in px, `[0, 3]` by default */
   blurRange?: [number, number];
 
-  /** Base size of each item in px, `48` by default */
-  itemSize?: number | string;
+  /** Base size of each item in px, `24` by default. Supports responsive values. */
+  itemSize?: StyleProp<number | string>;
 
-  /** Gap between items, `8` by default */
-  gap?: number | string;
-
-  /** Enable mouse wheel / scroll navigation, `true` by default */
-  withScrollNavigation?: boolean;
+  /** Gap between items, `2` by default. Supports responsive values. */
+  gap?: StyleProp<number | string>;
 
   /** Enable wrap-around navigation, `false` by default */
   loop?: boolean;
@@ -94,6 +107,33 @@ export interface LensSelectBaseProps {
 
   /** Show selection indicator below/beside the active item, `false` by default */
   withIndicator?: boolean;
+
+  /** Height of the default pill, `'60%'` by default. Supports responsive values. */
+  pillHeight?: StyleProp<number | string>;
+
+  /** Width (thickness) of the default pill in px, `4` by default. Supports responsive values. */
+  pillWidth?: StyleProp<number>;
+
+  /** Border radius of the default pill, `'xl'` by default */
+  pillRadius?: MantineRadius;
+
+  /** Color of the default pill (inactive state), uses `dimmed` by default */
+  pillColor?: MantineColor;
+
+  /** Color of the pill when hovered (not selected), uses theme primary light by default */
+  hoverColor?: MantineColor;
+
+  /** Color of the active pill and indicator, uses theme primary by default */
+  activeColor?: MantineColor;
+
+  /** Color of the indicator dot, defaults to `activeColor` or theme primary */
+  indicatorColor?: MantineColor;
+
+  /** Diameter of the indicator dot in px, `6` by default. Supports responsive values. */
+  indicatorSize?: StyleProp<number>;
+
+  /** Distance between the indicator and the pills in px, `16` by default. Supports responsive values. */
+  indicatorOffset?: StyleProp<number>;
 
   /** Accessible label for the component */
   ariaLabel?: string;
@@ -124,24 +164,54 @@ const defaultProps: Partial<LensSelectProps> = {
   withBlur: false,
   opacityRange: [0.4, 1],
   blurRange: [0, 3],
-  itemSize: 48,
-  gap: 8,
-  withScrollNavigation: true,
+  itemSize: 24,
+  gap: 2,
   loop: false,
   transitionDuration: 200,
   withIndicator: false,
+  pillHeight: '60%',
+  pillWidth: 4,
+  pillRadius: 'xl',
+  indicatorSize: 6,
+  indicatorOffset: 16,
   ariaLabel: 'Lens select',
 };
 
 const varsResolver = createVarsResolver<LensSelectFactory>(
-  (_theme, { transitionDuration, itemSize, magnification, lensRange, gap }) => ({
+  (
+    theme,
+    {
+      transitionDuration,
+      magnification,
+      lensRange,
+      pillRadius,
+      pillColor,
+      hoverColor,
+      activeColor,
+      indicatorColor,
+    }
+  ) => ({
     root: {
       '--ls-transition-duration': `${transitionDuration}ms`,
-      '--ls-item-size':
-        typeof itemSize === 'number' ? `${itemSize}px` : getSize(itemSize, 'ls-item-size'),
       '--ls-magnification': String(magnification),
       '--ls-range': String(lensRange),
-      '--ls-gap': typeof gap === 'number' ? `${gap}px` : gap,
+      '--ls-pill-radius': pillRadius !== undefined ? getRadius(pillRadius) : undefined,
+      '--ls-pill-color': pillColor ? getThemeColor(pillColor, theme) : undefined,
+      '--ls-pill-color-hover': hoverColor ? getThemeColor(hoverColor, theme) : undefined,
+      '--ls-pill-color-active': activeColor ? getThemeColor(activeColor, theme) : undefined,
+      '--ls-indicator-color': indicatorColor
+        ? getThemeColor(indicatorColor, theme)
+        : activeColor
+          ? getThemeColor(activeColor, theme)
+          : undefined,
+      // Responsive vars (itemSize, gap, pillHeight, pillWidth, indicatorSize, indicatorOffset)
+      // are handled by LensSelectMediaVariables
+      '--ls-item-size': undefined as unknown as string,
+      '--ls-gap': undefined as unknown as string,
+      '--ls-pill-height': undefined as unknown as string,
+      '--ls-pill-width': undefined as unknown as string,
+      '--ls-indicator-size': undefined as unknown as string,
+      '--ls-indicator-offset': undefined as unknown as string,
     },
   })
 );
@@ -178,11 +248,19 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
     blurRange,
     itemSize,
     gap,
-    withScrollNavigation,
     loop,
     transitionDuration,
     renderItem,
     withIndicator,
+    pillHeight: _pillHeight,
+    pillWidth: _pillWidth,
+    pillRadius: _pillRadius,
+    pillColor: _pillColor,
+    hoverColor: _hoverColor,
+    activeColor: _activeColor,
+    indicatorColor: _indicatorColor,
+    indicatorSize: _indicatorSize,
+    indicatorOffset: _indicatorOffset,
     ariaLabel,
     children,
     classNames,
@@ -217,11 +295,14 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
     varsResolver,
   });
 
-  const trackRef = useRef<HTMLDivElement>(null);
+  const responsiveClassName = useRandomClassName();
+
+  const internalTrackRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const mergedRootRef = useMergedRef(ref, rootRef);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [scaleFactors, setScaleFactors] = useState<number[]>(() => items.map(() => 0));
   const [isHovering, setIsHovering] = useState(false);
-  const wheelCooldown = useRef(false);
 
   const activeIndex = useMemo(
     () => items.findIndex((item) => item.value === _value),
@@ -229,12 +310,13 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
   );
 
   // Resolve item size in px for distance calculations
-  const itemSizePx = typeof itemSize === 'number' ? itemSize : 48;
+  const baseItemSize = getBaseValue(itemSize) as number | string;
+  const itemSizePx = typeof baseItemSize === 'number' ? baseItemSize : 24;
   const maxRange = (lensRange ?? 3) * itemSizePx;
 
   const updateScaleFactors = useCallback(
     (cursorPos: number) => {
-      const track = trackRef.current;
+      const track = internalTrackRef.current;
       if (!track) {
         return;
       }
@@ -326,26 +408,6 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
     [orientation, activeIndex, navigateTo, items.length]
   );
 
-  const handleWheel = useCallback(
-    (e: React.WheelEvent) => {
-      if (!withScrollNavigation || wheelCooldown.current) {
-        return;
-      }
-      e.preventDefault();
-      const delta = orientation === 'horizontal' ? e.deltaX || e.deltaY : e.deltaY;
-      if (delta > 0) {
-        navigateTo(activeIndex + 1);
-      } else if (delta < 0) {
-        navigateTo(activeIndex - 1);
-      }
-      wheelCooldown.current = true;
-      setTimeout(() => {
-        wheelCooldown.current = false;
-      }, 150);
-    },
-    [withScrollNavigation, orientation, activeIndex, navigateTo]
-  );
-
   const getItemStyle = useCallback(
     (index: number): React.CSSProperties => {
       const factor = scaleFactors[index] ?? 0;
@@ -387,6 +449,8 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
     ]
   );
 
+  const isPillMode = !renderItem && items.every((item) => item.view == null);
+
   const contextValue = useMemo(
     () => ({
       getStyles,
@@ -395,15 +459,25 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
       orientation: orientation ?? 'horizontal',
       scaleFactors,
       isHovering,
+      isPillMode,
     }),
-    [getStyles, items, _value, orientation, scaleFactors, isHovering]
+    [getStyles, items, _value, orientation, scaleFactors, isHovering, isPillMode]
   );
 
   return (
     <LensSelectProvider value={contextValue}>
+      <LensSelectMediaVariables
+        itemSize={itemSize}
+        gap={gap}
+        pillHeight={_pillHeight}
+        pillWidth={_pillWidth}
+        indicatorSize={_indicatorSize}
+        indicatorOffset={_indicatorOffset}
+        selector={`.${responsiveClassName}`}
+      />
       <Box
-        ref={ref}
-        {...getStyles('root')}
+        ref={mergedRootRef}
+        {...getStyles('root', { className: responsiveClassName })}
         {...others}
         mod={[{ orientation }, mod]}
         role="listbox"
@@ -413,14 +487,13 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
         onKeyDown={handleKeyDown}
       >
         <Box
-          ref={trackRef}
+          ref={internalTrackRef}
           {...getStyles('track')}
           mod={{ orientation }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleMouseLeave}
-          onWheel={handleWheel}
         >
           {items.map((item, index) => {
             const isActive = item.value === _value;
@@ -437,6 +510,7 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
                 role="option"
                 aria-selected={isActive}
                 data-active={isActive || undefined}
+                data-pill={item.view == null && !renderItem ? true : undefined}
                 data-index={index}
                 onClick={() => handleChange(item.value)}
               >
@@ -447,7 +521,11 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
                       hovered: factor > 0,
                     })
                   : (item.view ?? (
-                      <Box {...getStyles('itemPill')} data-active={isActive || undefined} />
+                      <Box
+                        {...getStyles('itemPill')}
+                        data-active={isActive || undefined}
+                        data-hovered={!isActive && factor > 0 ? true : undefined}
+                      />
                     ))}
               </Box>
             );

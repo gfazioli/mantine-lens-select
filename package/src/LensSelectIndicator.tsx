@@ -31,11 +31,23 @@ export const LensSelectIndicator = factory<LensSelectIndicatorFactory>((_props, 
     return null;
   }
 
+  const isVertical = ctx.orientation === 'vertical';
+
+  // In pill mode, each item is pillWidth wide; otherwise itemSize
+  const slotSize = ctx.isPillMode ? 'var(--ls-pill-width, 4px)' : 'var(--ls-item-size, 24px)';
+
+  const offset = `calc(${activeIndex} * (${slotSize} + var(--ls-gap, 2px)) + ${slotSize} / 2)`;
+
+  const indicatorStyle: React.CSSProperties = isVertical
+    ? { transform: `translateY(${offset})` }
+    : { transform: `translateX(${offset})` };
+
   return (
     <Box
       ref={ref}
       {...ctx.getStyles('indicator')}
       {...others}
+      style={indicatorStyle}
       data-orientation={ctx.orientation}
       data-active-index={activeIndex}
     >

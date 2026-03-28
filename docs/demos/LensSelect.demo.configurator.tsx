@@ -43,7 +43,13 @@ function Demo() {
 
 export const configurator: MantineDemo = {
   type: 'configurator',
-  component: (props: any) => <LensSelect {...props} data={SAMPLE_DATA} />,
+  component: ({ pillHeight, ...props }: any) => (
+    <LensSelect
+      {...props}
+      pillHeight={pillHeight != null ? `${pillHeight}%` : undefined}
+      data={SAMPLE_DATA}
+    />
+  ),
   code,
   centered: true,
   controls: [
@@ -78,20 +84,20 @@ export const configurator: MantineDemo = {
     {
       type: 'number',
       prop: 'itemSize',
-      initialValue: 48,
-      libraryValue: 48,
-      min: 24,
+      initialValue: 24,
+      libraryValue: 24,
+      min: 12,
       max: 96,
       step: 8,
     },
     {
       type: 'number',
       prop: 'gap',
-      initialValue: 8,
-      libraryValue: 8,
+      initialValue: 10,
+      libraryValue: 10,
       min: 0,
       max: 24,
-      step: 2,
+      step: 1,
     },
     {
       type: 'boolean',
@@ -114,14 +120,74 @@ export const configurator: MantineDemo = {
     {
       type: 'boolean',
       prop: 'withIndicator',
-      initialValue: false,
-      libraryValue: false,
-    },
-    {
-      type: 'boolean',
-      prop: 'withScrollNavigation',
       initialValue: true,
       libraryValue: true,
+    },
+    {
+      type: 'number',
+      prop: 'pillHeight',
+      initialValue: 100,
+      libraryValue: 100,
+      min: 10,
+      max: 100,
+      step: 5,
+    },
+    {
+      type: 'number',
+      prop: 'pillWidth',
+      initialValue: 4,
+      libraryValue: 4,
+      min: 1,
+      max: 12,
+      step: 1,
+    },
+    {
+      type: 'size',
+      prop: 'pillRadius',
+      initialValue: 'xl',
+      libraryValue: 'xl',
+    },
+    {
+      type: 'color',
+      prop: 'pillColor',
+      initialValue: 'gray',
+      libraryValue: 'gray',
+    },
+    {
+      type: 'color',
+      prop: 'hoverColor',
+      initialValue: 'blue',
+      libraryValue: 'blue',
+    },
+    {
+      type: 'color',
+      prop: 'activeColor',
+      initialValue: 'blue',
+      libraryValue: 'blue',
+    },
+    {
+      type: 'color',
+      prop: 'indicatorColor',
+      initialValue: 'blue',
+      libraryValue: 'blue',
+    },
+    {
+      type: 'number',
+      prop: 'indicatorSize',
+      initialValue: 6,
+      libraryValue: 6,
+      min: 2,
+      max: 16,
+      step: 1,
+    },
+    {
+      type: 'number',
+      prop: 'indicatorOffset',
+      initialValue: 16,
+      libraryValue: 16,
+      min: 4,
+      max: 32,
+      step: 2,
     },
     {
       type: 'boolean',

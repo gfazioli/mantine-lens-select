@@ -12,6 +12,8 @@ export interface LensSelectContextValue {
   scaleFactors: number[];
   /** Whether the cursor is currently hovering over the track */
   isHovering: boolean;
+  /** Whether items are rendered as pills (no custom view) */
+  isPillMode: boolean;
 }
 
 export const [LensSelectProvider, useLensSelectContext] = createSafeContext<LensSelectContextValue>(
