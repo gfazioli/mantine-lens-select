@@ -3,52 +3,20 @@ import { LensSelect, type LensSelectItem } from '@gfazioli/mantine-lens-select';
 import { Group, Stack, Text } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 
-const EVENTS: LensSelectItem[] = [
-  { value: 'Jan 2024' },
-  { value: 'Feb 2024' },
-  { value: 'Mar 2024' },
-  { value: 'Apr 2024' },
-  { value: 'May 2024' },
-  { value: 'Jun 2024' },
-  { value: 'Jul 2024' },
-  { value: 'Aug 2024' },
-  { value: 'Sep 2024' },
-  { value: 'Oct 2024' },
-  { value: 'Nov 2024' },
-  { value: 'Dec 2024' },
-  { value: 'Jan 2025' },
-  { value: 'Feb 2025' },
-  { value: 'Mar 2025' },
-  { value: 'Apr 2025' },
-  { value: 'May 2025' },
-  { value: 'Jun 2025' },
-  { value: 'Jul 2025' },
-  { value: 'Aug 2025' },
-  { value: 'Sep 2025' },
-  { value: 'Oct 2025' },
-  { value: 'Nov 2025' },
-  { value: 'Dec 2025' },
-];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const EVENTS: LensSelectItem[] = [2022, 2023, 2024, 2025].flatMap((year) =>
+  MONTHS.map((month) => ({ value: `${month} ${year}` }))
+);
 
 const code = `
 import { useState } from 'react';
 import { LensSelect } from '@gfazioli/mantine-lens-select';
 import { Group, Stack, Text } from '@mantine/core';
 
-const events = [
-  { value: 'Jan 2024' }, { value: 'Feb 2024' },
-  { value: 'Mar 2024' }, { value: 'Apr 2024' },
-  { value: 'May 2024' }, { value: 'Jun 2024' },
-  { value: 'Jul 2024' }, { value: 'Aug 2024' },
-  { value: 'Sep 2024' }, { value: 'Oct 2024' },
-  { value: 'Nov 2024' }, { value: 'Dec 2024' },
-  { value: 'Jan 2025' }, { value: 'Feb 2025' },
-  { value: 'Mar 2025' }, { value: 'Apr 2025' },
-  { value: 'May 2025' }, { value: 'Jun 2025' },
-  { value: 'Jul 2025' }, { value: 'Aug 2025' },
-  { value: 'Sep 2025' }, { value: 'Oct 2025' },
-  { value: 'Nov 2025' }, { value: 'Dec 2025' },
-];
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const events = [2022, 2023, 2024, 2025].flatMap((year) =>
+  months.map((month) => ({ value: \`\${month} \${year}\` }))
+);
 
 function Demo() {
   const [date, setDate] = useState<string | number>('Dec 2025');
@@ -60,10 +28,10 @@ function Demo() {
         value={date}
         onChange={setDate}
         orientation="vertical"
-        itemSize={16}
-        gap={3}
-        pillWidth={3}
-        magnification={2}
+        itemSize={12}
+        gap={6}
+        pillWidth={2}
+        magnification={1.5}
         lensRange={2}
         activeColor="orange"
         hoverColor="orange"
@@ -88,10 +56,10 @@ function Demo() {
         value={date}
         onChange={setDate}
         orientation="vertical"
-        itemSize={16}
-        gap={3}
-        pillWidth={3}
-        magnification={2}
+        itemSize={12}
+        gap={6}
+        pillWidth={2}
+        magnification={1.5}
         lensRange={2}
         activeColor="orange"
         hoverColor="orange"

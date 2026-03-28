@@ -1,38 +1,14 @@
 import { LensSelect, type LensSelectItem } from '@gfazioli/mantine-lens-select';
 import { MantineDemo } from '@mantinex/demo';
 
-const SAMPLE_DATA: LensSelectItem[] = [
-  { value: '1' },
-  { value: '2' },
-  { value: '3' },
-  { value: '4' },
-  { value: '5' },
-  { value: '6' },
-  { value: '7' },
-  { value: '8' },
-  { value: '9' },
-  { value: '10' },
-  { value: '11' },
-  { value: '12' },
-];
+const SAMPLE_DATA: LensSelectItem[] = Array.from({ length: 32 }, (_, i) => ({
+  value: String(i + 1),
+}));
 
 const code = `
 import { LensSelect } from '@gfazioli/mantine-lens-select';
 
-const data = [
-  { value: '1' },
-  { value: '2' },
-  { value: '3' },
-  { value: '4' },
-  { value: '5' },
-  { value: '6' },
-  { value: '7' },
-  { value: '8' },
-  { value: '9' },
-  { value: '10' },
-  { value: '11' },
-  { value: '12' },
-];
+const data = Array.from({ length: 32 }, (_, i) => ({ value: String(i + 1) }));
 
 function Demo() {
   return (
