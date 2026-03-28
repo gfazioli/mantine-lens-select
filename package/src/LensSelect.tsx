@@ -89,7 +89,7 @@ export interface LensSelectBaseProps {
   /** Base size of each item in px, `24` by default. Supports responsive values. */
   itemSize?: StyleProp<number | string>;
 
-  /** Gap between items, `2` by default. Supports responsive values. */
+  /** Gap between items, `10` by default. Supports responsive values. */
   gap?: StyleProp<number | string>;
 
   /** How items are selected: `'click'` (default) requires a click, `'hover'` auto-selects on hover */
@@ -113,7 +113,7 @@ export interface LensSelectBaseProps {
   /** Show selection indicator below/beside the active item, `false` by default */
   withIndicator?: boolean;
 
-  /** Height of the default pill, `'60%'` by default. Supports responsive values. */
+  /** Height of the default pill, `'100%'` by default. Supports responsive values. */
   pillHeight?: StyleProp<number | string>;
 
   /** Width (thickness) of the default pill in px, `4` by default. Supports responsive values. */

@@ -5,13 +5,16 @@ import * as demos from './demos';
 
 <InstallScript packages="@gfazioli/mantine-lens-select" />
 
-After installation import package styles at the root of your application:
+After installation import package styles at the root of your
+application:
 
 ```tsx
 import '@gfazioli/mantine-lens-select/styles.css';
 ```
 
-You can import styles within a layer `@layer mantine-lens-select` by importing `@gfazioli/mantine-lens-select/styles.layer.css` file.
+You can import styles within a layer
+`@layer mantine-lens-select` by importing
+`@gfazioli/mantine-lens-select/styles.layer.css` file.
 
 ```tsx
 import '@gfazioli/mantine-lens-select/styles.layer.css';
@@ -24,12 +27,20 @@ fisheye/lens magnification effect on hover — similar to
 the macOS Dock. Items near the cursor scale up, creating
 an interactive selection experience.
 
+When no `view` is provided in data items, the component
+renders default pills (rounded vertical bars). You can
+customize their appearance with `pillWidth`, `pillHeight`,
+`pillRadius`, `pillColor`, `hoverColor`, and `activeColor`
+props.
+
 <Demo data={demos.configurator} />
 
 ## Controlled
 
 The `LensSelect` component supports both controlled and
-uncontrolled modes via `value`/`defaultValue` and `onChange`:
+uncontrolled modes via `value`/`defaultValue` and
+`onChange`. Use the slider below to drive the selection
+externally:
 
 <Demo data={demos.controlled} />
 
@@ -37,11 +48,64 @@ uncontrolled modes via `value`/`defaultValue` and `onChange`:
 
 Both `LensSelect` and `LensSelect.Indicator` support
 `default` and `outline` variants. The `outline` variant
-renders pills and indicator with borders only (transparent
-fill). Use `LensSelect.Indicator` as an explicit child to
-control its variant independently:
+renders pills and indicator with borders instead of filled
+backgrounds. You can mix variants independently:
 
 <Demo data={demos.variants} />
+
+## LensSelect.Indicator
+
+The indicator is a compound component that shows a dot
+below the selected item. It can be used automatically
+via `withIndicator` prop or explicitly as a child with
+its own props (`color`, `size`, `offset`, `variant`):
+
+<Demo data={demos.indicatorConfigurator} />
+
+You can also pass indicator props from the parent via
+`indicatorProps`:
+
+```tsx
+<LensSelect
+  data={data}
+  indicatorProps={{
+    color: 'red',
+    size: 10,
+    offset: 20,
+    variant: 'outline',
+  }}
+/>
+```
+
+## Use Cases
+
+### macOS Dock
+
+Use `renderItem` with custom icons and a `Paper`
+container to recreate the macOS Dock experience:
+
+<Demo data={demos.dock} />
+
+### Rating / Volume Selector
+
+Default pills work great as a level/volume selector
+with compact sizing:
+
+<Demo data={demos.rating} />
+
+### Step Progress
+
+Use custom `view` with emojis or icons to build a
+step-by-step progress indicator:
+
+<Demo data={demos.stepProgress} />
+
+### Vertical Timeline
+
+Use `orientation="vertical"` to create a timeline
+selector inspired by macOS Time Machine:
+
+<Demo data={demos.timeline} />
 
 ## Styles API
 

@@ -211,4 +211,67 @@ describe('LensSelect', () => {
     expect(LensSelect.Indicator).toBeDefined();
     expect(LensSelect.Indicator.displayName).toBe('LensSelectIndicator');
   });
+
+  // Variants
+
+  it('applies default variant data attribute', () => {
+    const { container } = render(<LensSelect data={TEST_DATA} />);
+    const root = container.querySelector('[data-variant="default"]');
+    expect(root).toBeTruthy();
+  });
+
+  it('applies outline variant data attribute', () => {
+    const { container } = render(<LensSelect data={TEST_DATA} variant="outline" />);
+    const root = container.querySelector('[data-variant="outline"]');
+    expect(root).toBeTruthy();
+  });
+
+  // Pill mode
+
+  it('renders pills when view is not provided', () => {
+    const pillData = [{ value: '1' }, { value: '2' }, { value: '3' }];
+    const { container } = render(<LensSelect data={pillData} />);
+    const pills = container.querySelectorAll('[data-pill]');
+    expect(pills.length).toBe(3);
+  });
+
+  it('does not render pills when view is provided', () => {
+    const { container } = render(<LensSelect data={TEST_DATA} />);
+    const pills = container.querySelectorAll('[data-pill]');
+    expect(pills.length).toBe(0);
+  });
+
+  // selectionMode
+
+  it('does not have click handler in hover mode', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <LensSelect data={TEST_DATA} selectionMode="hover" onChange={onChange} />
+    );
+    const items = container.querySelectorAll('[role="option"]');
+    fireEvent.click(items[2]);
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  // indicatorProps
+
+  it('passes indicatorProps to the built-in indicator', () => {
+    const { container } = render(
+      <LensSelect data={TEST_DATA} indicatorProps={{ variant: 'outline' }} />
+    );
+    const indicator = container.querySelector('[data-variant="outline"][data-active-index]');
+    expect(indicator).toBeTruthy();
+  });
+
+  // Explicit LensSelect.Indicator as child
+
+  it('renders explicit LensSelect.Indicator as child', () => {
+    const { container } = render(
+      <LensSelect data={TEST_DATA} withIndicator={false}>
+        <LensSelect.Indicator variant="outline" />
+      </LensSelect>
+    );
+    const indicator = container.querySelector('[data-variant="outline"][data-active-index]');
+    expect(indicator).toBeTruthy();
+  });
 });
