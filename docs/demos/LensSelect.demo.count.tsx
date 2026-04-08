@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { LensSelect } from '@gfazioli/mantine-lens-select';
-import { Group, Stack, Text } from '@mantine/core';
+import { Stack, Text } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 
 const code = `
 import { useState } from 'react';
 import { LensSelect } from '@gfazioli/mantine-lens-select';
-import { Group, Stack, Text } from '@mantine/core';
+import { Stack, Text } from '@mantine/core';
 
 function Demo() {
   const [simple, setSimple] = useState<string | number>(1);
