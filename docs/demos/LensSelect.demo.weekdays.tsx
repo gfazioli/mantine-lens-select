@@ -82,7 +82,7 @@ function Demo() {
   const isWeekend = day === 'Sat' || day === 'Sun';
 
   return (
-    <Stack align="center" gap="md">
+    <Stack align="center" gap={32}>
       <Text size="sm" fw={500} c={isWeekend ? 'red' : undefined}>
         Selected: {String(day)}
       </Text>
@@ -106,7 +106,7 @@ function Demo() {
   const isWeekend = day === 'Sat' || day === 'Sun';
 
   return (
-    <Stack align="center" gap="md">
+    <Stack align="center" gap={32}>
       <Text size="sm" fw={500} c={isWeekend ? 'red' : undefined}>
         Selected: {String(day)}
       </Text>
