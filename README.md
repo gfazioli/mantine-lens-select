@@ -24,6 +24,8 @@ The [Mantine Lens Select](https://gfazioli.github.io/mantine-lens-select/) compo
 ## Features
 
 - Fisheye/lens magnification effect on hover (macOS Dock-like)
+- **Count mode**: `<LensSelect count={15} />` — no data array needed
+- **Range mode**: `min`/`max`/`step` props (like Mantine Slider)
 - Horizontal and vertical orientation support
 - Configurable magnification, lens range, scale, opacity, and blur effects
 - Controlled and uncontrolled modes via value/defaultValue/onChange
@@ -59,14 +61,32 @@ import '@gfazioli/mantine-lens-select/styles.css';
 
 ## Usage
 
+### Simple count mode
+
+```tsx
+import { LensSelect } from '@gfazioli/mantine-lens-select';
+
+function Demo() {
+  return <LensSelect count={20} />;
+}
+```
+
+### Range with step
+
+```tsx
+<LensSelect min={0} max={100} step={10} withIndicator />
+```
+
+### Custom data
+
 ```tsx
 import { LensSelect } from '@gfazioli/mantine-lens-select';
 
 const data = [
-  { value: 'home', view: 'Home' },
-  { value: 'search', view: 'Search' },
-  { value: 'mail', view: 'Mail' },
-  { value: 'settings', view: 'Settings' },
+  { value: 'home', view: <span>🏠</span> },
+  { value: 'search', view: <span>🔍</span> },
+  { value: 'mail', view: <span>📧</span> },
+  { value: 'settings', view: <span>⚙️</span> },
 ];
 
 function Demo() {

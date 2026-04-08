@@ -1,18 +1,12 @@
 import { useState } from 'react';
-import { LensSelect, type LensSelectItem } from '@gfazioli/mantine-lens-select';
+import { LensSelect } from '@gfazioli/mantine-lens-select';
 import { Stack, Text } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
-
-const LEVELS: LensSelectItem[] = Array.from({ length: 10 }, (_, i) => ({
-  value: i + 1,
-}));
 
 const code = `
 import { useState } from 'react';
 import { LensSelect } from '@gfazioli/mantine-lens-select';
 import { Stack, Text } from '@mantine/core';
-
-const levels = Array.from({ length: 10 }, (_, i) => ({ value: i + 1 }));
 
 function Demo() {
   const [value, setValue] = useState<string | number>(5);
@@ -21,7 +15,7 @@ function Demo() {
     <Stack align="center" gap="md">
       <Text size="sm" fw={500}>Volume: {String(value)}/10</Text>
       <LensSelect
-        data={levels}
+        count={10}
         value={value}
         onChange={setValue}
         itemSize={32}
@@ -47,7 +41,7 @@ function Demo() {
         Volume: {String(value)}/10
       </Text>
       <LensSelect
-        data={LEVELS}
+        count={10}
         value={value}
         onChange={setValue}
         itemSize={32}

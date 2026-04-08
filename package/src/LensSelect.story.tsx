@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { IconHome, IconSearch, IconMail, IconCalendar, IconSettings, IconPhoto, IconMusic, IconNote } from '@tabler/icons-react';
+import {
+  IconHome,
+  IconSearch,
+  IconMail,
+  IconCalendar,
+  IconSettings,
+  IconPhoto,
+  IconMusic,
+  IconNote,
+} from '@tabler/icons-react';
 import { Stack, Text } from '@mantine/core';
 import { LensSelect, type LensSelectItem } from './LensSelect';
 
@@ -41,13 +50,62 @@ const PILL_DATA: LensSelectItem[] = [
 ];
 
 const TEXT_DATA: LensSelectItem[] = [
-  { value: 'mon', view: <Text size="xs" fw={600}>Mon</Text> },
-  { value: 'tue', view: <Text size="xs" fw={600}>Tue</Text> },
-  { value: 'wed', view: <Text size="xs" fw={600}>Wed</Text> },
-  { value: 'thu', view: <Text size="xs" fw={600}>Thu</Text> },
-  { value: 'fri', view: <Text size="xs" fw={600}>Fri</Text> },
-  { value: 'sat', view: <Text size="xs" fw={600}>Sat</Text> },
-  { value: 'sun', view: <Text size="xs" fw={600}>Sun</Text> },
+  {
+    value: 'mon',
+    view: (
+      <Text size="xs" fw={600}>
+        Mon
+      </Text>
+    ),
+  },
+  {
+    value: 'tue',
+    view: (
+      <Text size="xs" fw={600}>
+        Tue
+      </Text>
+    ),
+  },
+  {
+    value: 'wed',
+    view: (
+      <Text size="xs" fw={600}>
+        Wed
+      </Text>
+    ),
+  },
+  {
+    value: 'thu',
+    view: (
+      <Text size="xs" fw={600}>
+        Thu
+      </Text>
+    ),
+  },
+  {
+    value: 'fri',
+    view: (
+      <Text size="xs" fw={600}>
+        Fri
+      </Text>
+    ),
+  },
+  {
+    value: 'sat',
+    view: (
+      <Text size="xs" fw={600}>
+        Sat
+      </Text>
+    ),
+  },
+  {
+    value: 'sun',
+    view: (
+      <Text size="xs" fw={600}>
+        Sun
+      </Text>
+    ),
+  },
 ];
 
 export default {
@@ -218,6 +276,58 @@ export function CustomRender() {
       )}
       withIndicator
     />
+  );
+}
+
+// --- Count mode (no data) ---
+
+export function CountBasic() {
+  return <LensSelect count={15} withIndicator />;
+}
+
+export function CountWithRange() {
+  const [value, setValue] = useState<string | number>(50);
+  return (
+    <Stack>
+      <Text size="sm">Selected: {String(value)}</Text>
+      <LensSelect count={20} min={0} max={100} value={value} onChange={setValue} withIndicator />
+    </Stack>
+  );
+}
+
+export function CountWithStep() {
+  const [value, setValue] = useState<string | number>(0);
+  return (
+    <Stack>
+      <Text size="sm">Selected: {String(value)}</Text>
+      <LensSelect min={0} max={100} step={10} value={value} onChange={setValue} withIndicator />
+    </Stack>
+  );
+}
+
+export function CountVertical() {
+  return <LensSelect count={10} orientation="vertical" withIndicator />;
+}
+
+export function CountWithEffects() {
+  return <LensSelect count={20} withOpacity withBlur expandOnHover withIndicator />;
+}
+
+export function CountSmallStep() {
+  const [value, setValue] = useState<string | number>(0);
+  return (
+    <Stack>
+      <Text size="sm">Selected: {String(value)}</Text>
+      <LensSelect
+        min={0}
+        max={10}
+        step={0.5}
+        precision={1}
+        value={value}
+        onChange={setValue}
+        withIndicator
+      />
+    </Stack>
   );
 }
 
