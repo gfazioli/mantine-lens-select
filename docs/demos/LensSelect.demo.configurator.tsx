@@ -1,18 +1,12 @@
-import { LensSelect, type LensSelectItem } from '@gfazioli/mantine-lens-select';
+import { LensSelect } from '@gfazioli/mantine-lens-select';
 import { MantineDemo } from '@mantinex/demo';
-
-const SAMPLE_DATA: LensSelectItem[] = Array.from({ length: 32 }, (_, i) => ({
-  value: String(i + 1),
-}));
 
 const code = `
 import { LensSelect } from '@gfazioli/mantine-lens-select';
 
-const data = Array.from({ length: 32 }, (_, i) => ({ value: String(i + 1) }));
-
 function Demo() {
   return (
-    <LensSelect{{props}} data={data} />
+    <LensSelect{{props}} />
   );
 }
 `;
@@ -20,15 +14,20 @@ function Demo() {
 export const configurator: MantineDemo = {
   type: 'configurator',
   component: ({ pillHeight, ...props }: any) => (
-    <LensSelect
-      {...props}
-      pillHeight={pillHeight != null ? `${pillHeight}%` : undefined}
-      data={SAMPLE_DATA}
-    />
+    <LensSelect {...props} pillHeight={pillHeight != null ? `${pillHeight}%` : undefined} />
   ),
   code,
   centered: true,
   controls: [
+    {
+      type: 'number',
+      prop: 'count',
+      initialValue: 32,
+      libraryValue: undefined,
+      min: 1,
+      max: 64,
+      step: 1,
+    },
     {
       type: 'segmented',
       prop: 'variant',

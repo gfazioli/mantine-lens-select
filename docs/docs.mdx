@@ -35,6 +35,32 @@ props.
 
 <Demo data={demos.configurator} />
 
+## Count mode
+
+For simple numeric selection, use the `count` prop
+instead of `data`. This generates pills automatically
+with numeric values — no array needed.
+
+Combine with `min` and `max` for a custom range,
+or use `step` for fixed increments (similar to
+Mantine's Slider API):
+
+```tsx
+// Simple: 15 pills with values 1..15
+<LensSelect count={15} />
+
+// Range: 20 pills mapped from 0 to 100
+<LensSelect count={20} min={0} max={100} />
+
+// Step: pills at 0, 10, 20, ..., 100
+<LensSelect min={0} max={100} step={10} />
+```
+
+Use `precision` to control decimal places for
+generated values.
+
+<Demo data={demos.count} />
+
 ## Controlled
 
 The `LensSelect` component supports both controlled and

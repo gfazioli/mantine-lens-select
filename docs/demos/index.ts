@@ -1,5 +1,6 @@
 export { configurator } from './LensSelect.demo.configurator';
 export { controlled } from './LensSelect.demo.controlled';
+export { count } from './LensSelect.demo.count';
 export { dock } from './LensSelect.demo.dock';
 export { indicatorConfigurator } from './LensSelect.demo.indicatorConfigurator';
 export { rating } from './LensSelect.demo.rating';

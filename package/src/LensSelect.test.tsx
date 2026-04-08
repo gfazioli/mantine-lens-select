@@ -274,4 +274,96 @@ describe('LensSelect', () => {
     const indicator = container.querySelector('[data-variant="outline"][data-active-index]');
     expect(indicator).toBeTruthy();
   });
+
+  // Count mode
+
+  it('renders N pills with count prop', () => {
+    const { container } = render(<LensSelect count={5} />);
+    const items = container.querySelectorAll('[role="option"]');
+    expect(items.length).toBe(5);
+  });
+
+  it('count mode generates values 1..N', () => {
+    const onChange = jest.fn();
+    const { container } = render(<LensSelect count={3} onChange={onChange} />);
+    const items = container.querySelectorAll('[role="option"]');
+    fireEvent.click(items[2]);
+    expect(onChange).toHaveBeenCalledWith(3);
+  });
+
+  it('count mode with min/max generates interpolated values', () => {
+    const onChange = jest.fn();
+    const { container } = render(<LensSelect count={3} min={0} max={100} onChange={onChange} />);
+    const items = container.querySelectorAll('[role="option"]');
+    expect(items.length).toBe(3);
+    // First item = 0, click last item = 100
+    fireEvent.click(items[2]);
+    expect(onChange).toHaveBeenCalledWith(100);
+    // Click first item = 0
+    fireEvent.click(items[0]);
+    expect(onChange).toHaveBeenCalledWith(0);
+  });
+
+  it('step mode generates values at step intervals', () => {
+    const onChange = jest.fn();
+    const { container } = render(<LensSelect min={0} max={100} step={25} onChange={onChange} />);
+    const items = container.querySelectorAll('[role="option"]');
+    expect(items.length).toBe(5); // 0, 25, 50, 75, 100
+    fireEvent.click(items[1]);
+    expect(onChange).toHaveBeenCalledWith(25);
+    fireEvent.click(items[4]);
+    expect(onChange).toHaveBeenCalledWith(100);
+  });
+
+  it('data prop takes priority over count', () => {
+    const { container } = render(<LensSelect data={TEST_DATA} count={20} />);
+    const items = container.querySelectorAll('[role="option"]');
+    expect(items.length).toBe(5); // data has 5, not 20
+  });
+
+  it('count=0 renders empty', () => {
+    const { container } = render(<LensSelect count={0} />);
+    const items = container.querySelectorAll('[role="option"]');
+    expect(items.length).toBe(0);
+  });
+
+  it('count=1 renders single pill', () => {
+    const { container } = render(<LensSelect count={1} />);
+    const items = container.querySelectorAll('[role="option"]');
+    expect(items.length).toBe(1);
+  });
+
+  it('count=1 with min/max returns min value', () => {
+    const onChange = jest.fn();
+    const { container } = render(<LensSelect count={1} min={10} max={90} onChange={onChange} />);
+    const items = container.querySelectorAll('[role="option"]');
+    fireEvent.click(items[0]);
+    expect(onChange).toHaveBeenCalledWith(10);
+  });
+
+  it('min > max swaps range', () => {
+    const onChange = jest.fn();
+    const { container } = render(<LensSelect count={3} min={100} max={0} onChange={onChange} />);
+    const items = container.querySelectorAll('[role="option"]');
+    fireEvent.click(items[0]);
+    expect(onChange).toHaveBeenCalledWith(0);
+    fireEvent.click(items[2]);
+    expect(onChange).toHaveBeenCalledWith(100);
+  });
+
+  it('precision controls decimal places', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <LensSelect count={3} min={0} max={1} precision={2} onChange={onChange} />
+    );
+    const items = container.querySelectorAll('[role="option"]');
+    fireEvent.click(items[1]);
+    expect(onChange).toHaveBeenCalledWith(0.5);
+  });
+
+  it('renders pills in count mode', () => {
+    const { container } = render(<LensSelect count={5} />);
+    const pills = container.querySelectorAll('[data-pill]');
+    expect(pills.length).toBe(5);
+  });
 });

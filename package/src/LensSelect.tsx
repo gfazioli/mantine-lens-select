@@ -152,6 +152,23 @@ export interface LensSelectBaseProps {
 
   /** Children (e.g. LensSelect.Indicator) */
   children?: React.ReactNode;
+
+  /** Number of pills to generate. When provided without `data`, renders pills with numeric values.
+   *  Use alone for values 1..N, or combine with `min`/`max` for a custom range. */
+  count?: number;
+
+  /** Minimum value of the generated range. Used with `count` or `step`. @default 0 when `max` is provided */
+  min?: number;
+
+  /** Maximum value of the generated range. Used with `count` or `step`. @default 100 when `min` is provided */
+  max?: number;
+
+  /** Step increment between generated values. When provided with `min`/`max`, overrides `count`.
+   *  E.g., `min={0} max={100} step={10}` generates values 0, 10, 20, ..., 100. */
+  step?: number;
+
+  /** Number of decimal places for generated numeric values. @default 0 */
+  precision?: number;
 }
 
 export interface LensSelectProps
@@ -234,6 +251,58 @@ const varsResolver = createVarsResolver<LensSelectFactory>(
   }
 );
 
+function round(value: number, precision: number): number {
+  const factor = 10 ** precision;
+  return Math.round(value * factor) / factor;
+}
+
+function countDecimalPlaces(n: number): number {
+  const s = String(n);
+  const dot = s.indexOf('.');
+  return dot === -1 ? 0 : s.length - dot - 1;
+}
+
+function generateItems(
+  count: number | undefined,
+  min: number | undefined,
+  max: number | undefined,
+  step: number | undefined,
+  precision: number | undefined
+): LensSelectItem[] {
+  // step with min/max: generate at step intervals (ignores count)
+  if (step != null && min != null && max != null) {
+    const [lo, hi] = min <= max ? [min, max] : [max, min];
+    const p = precision ?? countDecimalPlaces(step);
+    const items: LensSelectItem[] = [];
+    for (let v = lo; v <= hi; v += step) {
+      items.push({ value: round(v, p) });
+    }
+    if (items.length > 0 && items[items.length - 1].value !== round(hi, p)) {
+      items.push({ value: round(hi, p) });
+    }
+    return items;
+  }
+
+  // step with only min or max: need both, ignore step
+  if (count == null || count <= 0) {
+    return [];
+  }
+
+  // count without min/max: simple 1..N
+  if (min == null && max == null) {
+    return Array.from({ length: count }, (_, i) => ({ value: i + 1 }));
+  }
+
+  // count with min/max: linear interpolation
+  const lo = min ?? 0;
+  const hi = max ?? 100;
+  const [rMin, rMax] = lo <= hi ? [lo, hi] : [hi, lo];
+  const p = precision ?? 0;
+  return Array.from({ length: count }, (_, i) => ({
+    value: round(count === 1 ? rMin : rMin + (i / (count - 1)) * (rMax - rMin), p),
+  }));
+}
+
 /**
  * Compute a magnification factor using a cosine-based easing.
  * Returns 0 when distance >= maxRange, 1 when distance === 0.
@@ -284,6 +353,11 @@ export const LensSelect = factory<LensSelectFactory>((_props) => {
     indicatorProps,
     ariaLabel,
     children,
+    count,
+    min,
+    max,
+    step,
+    precision,
     variant,
     classNames,
     style,
@@ -295,7 +369,13 @@ export const LensSelect = factory<LensSelectFactory>((_props) => {
     ...others
   } = props;
 
-  const items = data || [];
+  const items = useMemo(() => {
+    if (data && data.length > 0) return data;
+    if (count != null || (step != null && min != null && max != null)) {
+      return generateItems(count, min, max, step, precision);
+    }
+    return [];
+  }, [data, count, min, max, step, precision]);
 
   const [_value, handleChange] = useUncontrolled({
     value,

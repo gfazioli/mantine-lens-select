@@ -4,9 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Repo Is
 
-This is the **GitHub template** used to bootstrap every Mantine Extensions component library. It currently contains a working LED component as a reference implementation. All 19+ component repos in the ecosystem are cloned from this template and share its structure, build pipeline, and tooling.
-
-Changes to shared files here (Shell, Footer, scripts, configs) must be propagated manually to all component repos.
+`@gfazioli/mantine-lens-select` — A Mantine 9 fisheye/lens magnification select component for React. Displays items with a macOS Dock-like magnification effect on hover. Supports count mode (`count` prop), range mode (`min`/`max`/`step`), and custom data arrays.
 
 ## Commands
 
@@ -80,15 +78,14 @@ The `next.config.mjs` dynamically sets `basePath` from the repository field in `
 
 ## Code Style
 
-- Prettier: 160 char width, single quotes, trailing commas, sorted imports (styles → react → third-party → @mantine → local)
-- MDX files use 70 char print width
-- ESLint: `eslint-config-mantine` base
+- oxfmt: 100 char width, single quotes, trailing commas, sorted imports (styles → react → third-party → @mantine → local)
+- oxlint for linting
 - Stylelint: `stylelint-config-standard-scss` (relaxed)
 - Syncpack enforces consistent dependency versions across workspaces
 
 ## Tech Stack
 
-- **Mantine 8.x**, **React 19**, **TypeScript 5.9**
+- **Mantine 9.x**, **React 19**, **TypeScript 6**
 - **Yarn 4** (node-modules linker, not PnP)
 - **Rollup** for package builds, **esbuild** for transpilation
 - **Next.js 15** with static export for docs
