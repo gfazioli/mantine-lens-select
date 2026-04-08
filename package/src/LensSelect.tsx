@@ -249,8 +249,9 @@ function computeLensFactor(distance: number, maxRange: number): number {
   return (1 + Math.cos((Math.PI * distance) / maxRange)) / 2;
 }
 
-export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
+export const LensSelect = factory<LensSelectFactory>((_props) => {
   const props = useProps('LensSelect', defaultProps, _props);
+  const { ref, ...__ } = props as typeof props & { ref?: React.Ref<HTMLDivElement> };
   const {
     data,
     value,
@@ -326,7 +327,7 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
   const [isHovering, setIsHovering] = useState(false);
 
   const activeIndex = useMemo(
-    () => items.findIndex((item) => item.value === _value),
+    () => items.findIndex((item: LensSelectItem) => item.value === _value),
     [items, _value]
   );
 
@@ -341,7 +342,7 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
   // Compute scale factors centered on a specific item index (for wheel mode)
   const computeIndexBasedFactors = useCallback(
     (centerIndex: number) =>
-      items.map((_item, i) => {
+      items.map((_item: LensSelectItem, i: number) => {
         const distance = Math.abs(i - centerIndex) * itemSizePx;
         return computeLensFactor(distance, maxRange);
       }),
@@ -356,7 +357,7 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
         return;
       }
 
-      const newFactors = items.map((_item, i) => {
+      const newFactors = items.map((_item: LensSelectItem, i: number) => {
         const el = itemRefs.current[i];
         if (!el) {
           return 0;
@@ -375,7 +376,7 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
       if (autoSelectOnHover) {
         let maxFactor = 0;
         let maxIndex = -1;
-        newFactors.forEach((f, i) => {
+        newFactors.forEach((f: number, i: number) => {
           if (f > maxFactor) {
             maxFactor = f;
             maxIndex = i;
@@ -558,7 +559,7 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
     ]
   );
 
-  const isPillMode = !renderItem && items.every((item) => item.view == null);
+  const isPillMode = !renderItem && items.every((item: LensSelectItem) => item.view == null);
 
   const contextValue = useMemo(
     () => ({
@@ -605,7 +606,7 @@ export const LensSelect = factory<LensSelectFactory>((_props, ref) => {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleMouseLeave}
         >
-          {items.map((item, index) => {
+          {items.map((item: LensSelectItem, index: number) => {
             const isActive = item.value === _value;
             const factor = scaleFactors[index] ?? 0;
             const mag = magnification ?? 2;
