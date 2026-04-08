@@ -272,7 +272,7 @@ export const LensSelect = factory<LensSelectFactory>((_props) => {
     withWheel,
     loop,
     transitionDuration,
-    easing,
+    easing: _easing,
     renderItem,
     withIndicator,
     pillHeight: _pillHeight,
