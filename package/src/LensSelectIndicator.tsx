@@ -45,8 +45,9 @@ const defaultProps: Partial<LensSelectIndicatorProps> = {
   offset: 16,
 };
 
-export const LensSelectIndicator = factory<LensSelectIndicatorFactory>((_props, ref) => {
+export const LensSelectIndicator = factory<LensSelectIndicatorFactory>((_props) => {
   const props = useProps('LensSelectIndicator', defaultProps, _props);
+  const { ref, ...__ } = props as typeof props & { ref?: React.Ref<HTMLDivElement> };
   const { children, variant, color, size, offset, ...others } = props;
 
   const theme = useMantineTheme();
