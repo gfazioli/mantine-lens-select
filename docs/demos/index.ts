@@ -7,3 +7,4 @@ export { rating } from './LensSelect.demo.rating';
 export { stylesApi } from './LensSelect.demo.stylesApi';
 export { timeline } from './LensSelect.demo.timeline';
 export { variants } from './LensSelect.demo.variants';
+export { weekdays } from './LensSelect.demo.weekdays';

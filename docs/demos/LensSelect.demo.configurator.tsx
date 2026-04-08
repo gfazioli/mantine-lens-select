@@ -22,7 +22,7 @@ export const configurator: MantineDemo = {
     {
       type: 'number',
       prop: 'count',
-      initialValue: 32,
+      initialValue: 20,
       libraryValue: undefined,
       min: 1,
       max: 64,
@@ -103,7 +103,7 @@ export const configurator: MantineDemo = {
       initialValue: 10,
       libraryValue: 10,
       min: 0,
-      max: 24,
+      max: 10,
       step: 1,
     },
     {
@@ -145,7 +145,7 @@ export const configurator: MantineDemo = {
       initialValue: 4,
       libraryValue: 4,
       min: 1,
-      max: 12,
+      max: 10,
       step: 1,
     },
     {
