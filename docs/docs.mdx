@@ -112,10 +112,19 @@ container to recreate the macOS Dock experience:
 
 <Demo data={demos.dock} />
 
+### Weekday Selector
+
+Use `data` with custom `view` to build a day picker.
+Weekend days (Sat, Sun) are highlighted in red — both
+the label text and the active indicator color change
+dynamically based on the selected value:
+
+<Demo data={demos.weekdays} />
+
 ### Rating / Volume Selector
 
-Default pills work great as a level/volume selector
-with compact sizing:
+Use `count` for a quick numeric selector — no data
+array needed:
 
 <Demo data={demos.rating} />
 
