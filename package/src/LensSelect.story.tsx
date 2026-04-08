@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { IconHome, IconSearch, IconMail, IconCalendar, IconSettings, IconPhoto, IconMusic, IconNote } from '@tabler/icons-react';
 import { Stack, Text } from '@mantine/core';
 import { LensSelect, type LensSelectItem } from './LensSelect';
 
-const SAMPLE_DATA: LensSelectItem[] = [
+// --- Data sets ---
+
+const EMOJI_DATA: LensSelectItem[] = [
   { value: 'home', view: <Text size="sm">🏠</Text> },
   { value: 'search', view: <Text size="sm">🔍</Text> },
   { value: 'mail', view: <Text size="sm">📧</Text> },
@@ -13,57 +16,193 @@ const SAMPLE_DATA: LensSelectItem[] = [
   { value: 'notes', view: <Text size="sm">📝</Text> },
 ];
 
+const ICON_DATA: LensSelectItem[] = [
+  { value: 'home', view: <IconHome size={20} /> },
+  { value: 'search', view: <IconSearch size={20} /> },
+  { value: 'mail', view: <IconMail size={20} /> },
+  { value: 'calendar', view: <IconCalendar size={20} /> },
+  { value: 'settings', view: <IconSettings size={20} /> },
+  { value: 'photos', view: <IconPhoto size={20} /> },
+  { value: 'music', view: <IconMusic size={20} /> },
+  { value: 'notes', view: <IconNote size={20} /> },
+];
+
+const PILL_DATA: LensSelectItem[] = [
+  { value: 'a' },
+  { value: 'b' },
+  { value: 'c' },
+  { value: 'd' },
+  { value: 'e' },
+  { value: 'f' },
+  { value: 'g' },
+  { value: 'h' },
+  { value: 'i' },
+  { value: 'j' },
+];
+
+const TEXT_DATA: LensSelectItem[] = [
+  { value: 'mon', view: <Text size="xs" fw={600}>Mon</Text> },
+  { value: 'tue', view: <Text size="xs" fw={600}>Tue</Text> },
+  { value: 'wed', view: <Text size="xs" fw={600}>Wed</Text> },
+  { value: 'thu', view: <Text size="xs" fw={600}>Thu</Text> },
+  { value: 'fri', view: <Text size="xs" fw={600}>Fri</Text> },
+  { value: 'sat', view: <Text size="xs" fw={600}>Sat</Text> },
+  { value: 'sun', view: <Text size="xs" fw={600}>Sun</Text> },
+];
+
 export default {
   title: 'Components/LensSelect',
 };
 
-export function Usage() {
-  return <LensSelect data={SAMPLE_DATA} />;
+// --- Pills (no icons, no view) ---
+
+export function Pills() {
+  return <LensSelect data={PILL_DATA} withIndicator />;
 }
 
-export function WithIndicator() {
-  return <LensSelect data={SAMPLE_DATA} withIndicator />;
+export function PillsVertical() {
+  return <LensSelect data={PILL_DATA} orientation="vertical" withIndicator />;
 }
 
-export function Vertical() {
-  return <LensSelect data={SAMPLE_DATA} orientation="vertical" withIndicator />;
+export function PillsCustomColors() {
+  return (
+    <LensSelect
+      data={PILL_DATA}
+      withIndicator
+      pillColor="gray"
+      hoverColor="blue"
+      activeColor="red"
+    />
+  );
 }
 
-export function CustomMagnification() {
+export function PillsWithEffects() {
+  return <LensSelect data={PILL_DATA} withIndicator withOpacity withBlur expandOnHover />;
+}
+
+// --- Emoji icons ---
+
+export function Emojis() {
+  return <LensSelect data={EMOJI_DATA} withIndicator />;
+}
+
+export function EmojisVertical() {
+  return <LensSelect data={EMOJI_DATA} orientation="vertical" withIndicator />;
+}
+
+// --- Tabler icons ---
+
+export function TablerIcons() {
+  return <LensSelect data={ICON_DATA} withIndicator />;
+}
+
+export function TablerIconsVertical() {
+  return <LensSelect data={ICON_DATA} orientation="vertical" withIndicator />;
+}
+
+// --- Text labels ---
+
+export function TextLabels() {
+  return <LensSelect data={TEXT_DATA} itemSize={36} withIndicator />;
+}
+
+// --- Variants ---
+
+export function OutlineVariant() {
+  return <LensSelect data={EMOJI_DATA} variant="outline" withIndicator />;
+}
+
+export function OutlinePills() {
+  return <LensSelect data={PILL_DATA} variant="outline" withIndicator />;
+}
+
+// --- Magnification ---
+
+export function Magnification() {
   return (
     <Stack>
       <Text size="sm">magnification=1.5</Text>
-      <LensSelect data={SAMPLE_DATA} magnification={1.5} />
+      <LensSelect data={EMOJI_DATA} magnification={1.5} withIndicator />
       <Text size="sm">magnification=3</Text>
-      <LensSelect data={SAMPLE_DATA} magnification={3} />
+      <LensSelect data={EMOJI_DATA} magnification={3} withIndicator />
+      <Text size="sm">magnification=1.5 (pills)</Text>
+      <LensSelect data={PILL_DATA} magnification={1.5} withIndicator />
     </Stack>
   );
 }
 
+// --- Effects ---
+
 export function WithOpacityAndBlur() {
-  return <LensSelect data={SAMPLE_DATA} withOpacity withBlur withIndicator />;
+  return <LensSelect data={EMOJI_DATA} withOpacity withBlur withIndicator />;
 }
+
+export function ExpandOnHover() {
+  return <LensSelect data={EMOJI_DATA} expandOnHover withIndicator />;
+}
+
+export function AllEffects() {
+  return <LensSelect data={EMOJI_DATA} withOpacity withBlur expandOnHover withIndicator />;
+}
+
+export function AllEffectsPills() {
+  return <LensSelect data={PILL_DATA} withOpacity withBlur expandOnHover withIndicator />;
+}
+
+// --- Selection modes ---
+
+export function HoverMode() {
+  return <LensSelect data={EMOJI_DATA} selectionMode="hover" withIndicator />;
+}
+
+export function WheelMode() {
+  return <LensSelect data={EMOJI_DATA} withWheel withIndicator />;
+}
+
+export function HoverWheelMode() {
+  return <LensSelect data={EMOJI_DATA} selectionMode="hover" withWheel withIndicator />;
+}
+
+// --- Controlled ---
 
 export function Controlled() {
   const [value, setValue] = useState<string | number>('mail');
   return (
     <Stack>
       <Text size="sm">Selected: {String(value)}</Text>
-      <LensSelect data={SAMPLE_DATA} value={value} onChange={setValue} withIndicator />
+      <LensSelect data={EMOJI_DATA} value={value} onChange={setValue} withIndicator />
     </Stack>
   );
 }
 
-export function Loop() {
-  return <LensSelect data={SAMPLE_DATA} loop withIndicator />;
+export function ControlledPills() {
+  const [value, setValue] = useState<string | number>('d');
+  return (
+    <Stack>
+      <Text size="sm">Selected: {String(value)}</Text>
+      <LensSelect data={PILL_DATA} value={value} onChange={setValue} withIndicator />
+    </Stack>
+  );
 }
+
+// --- Loop ---
+
+export function Loop() {
+  return <LensSelect data={EMOJI_DATA} loop withIndicator />;
+}
+
+export function LoopPills() {
+  return <LensSelect data={PILL_DATA} loop withIndicator />;
+}
+
+// --- Custom render ---
 
 export function CustomRender() {
   return (
     <LensSelect
-      data={SAMPLE_DATA}
+      data={EMOJI_DATA}
       itemSize={56}
-      renderItem={(item, { scale }) => (
+      renderItem={(item: LensSelectItem, { scale }: { scale: number }) => (
         <div
           style={{
             fontSize: `${scale * 24}px`,
@@ -79,5 +218,22 @@ export function CustomRender() {
       )}
       withIndicator
     />
+  );
+}
+
+// --- Size variations ---
+
+export function ItemSizes() {
+  return (
+    <Stack>
+      <Text size="sm">itemSize=16</Text>
+      <LensSelect data={PILL_DATA} itemSize={16} withIndicator />
+      <Text size="sm">itemSize=24 (default)</Text>
+      <LensSelect data={PILL_DATA} itemSize={24} withIndicator />
+      <Text size="sm">itemSize=36</Text>
+      <LensSelect data={PILL_DATA} itemSize={36} withIndicator />
+      <Text size="sm">itemSize=48</Text>
+      <LensSelect data={EMOJI_DATA} itemSize={48} withIndicator />
+    </Stack>
   );
 }
