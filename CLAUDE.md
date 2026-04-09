@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | Command | Purpose |
 |---------|---------|
 | `yarn build` | Build the npm package (Rollup + DTS + CSS extraction) |
-| `yarn test` | Full test suite: syncpack → prettier → typecheck → lint → jest |
+| `yarn test` | Full test suite: syncpack → oxfmt → typecheck → lint → jest |
 | `yarn jest` | Run only Jest unit tests |
 | `yarn jest --testPathPattern=LensSelect` | Run tests for a single component |
 | `yarn dev` | Start docs dev server at http://localhost:9281 |
@@ -19,7 +19,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `yarn docgen` | Generate `docs/docgen.json` from component TypeScript types |
 | `yarn docs:build` | Run docgen + build Next.js static site |
 | `yarn docs:deploy` | Build docs + deploy to GitHub Pages |
-| `yarn prettier:write` | Auto-fix formatting (run this if prettier check fails after template propagation) |
+| `yarn format:write` | Auto-fix formatting (oxfmt) |
+| `yarn format:test` | Check formatting (oxfmt) |
 | `yarn release:patch` | Bump patch version, publish to npm, deploy docs |
 | `diny yolo` | AI-assisted git commit (stages all, generates message, commits + pushes) |
 
@@ -90,4 +91,4 @@ The `next.config.mjs` dynamically sets `basePath` from the repository field in `
 - **Rollup** for package builds, **esbuild** for transpilation
 - **Next.js 15** with static export for docs
 - **Jest 29** with jsdom for tests
-- **Storybook 8** with React-Vite framework
+- **Storybook 10** with React-Vite framework

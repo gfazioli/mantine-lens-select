@@ -320,7 +320,7 @@ function computeLensFactor(distance: number, maxRange: number): number {
 
 export const LensSelect = factory<LensSelectFactory>((_props) => {
   const props = useProps('LensSelect', defaultProps, _props);
-  const { ref, ...__ } = props as typeof props & { ref?: React.Ref<HTMLDivElement> };
+  const { ref, ...propsWithoutRef } = props as typeof props & { ref?: React.Ref<HTMLDivElement> };
   const {
     data,
     value,
@@ -367,7 +367,7 @@ export const LensSelect = factory<LensSelectFactory>((_props) => {
     className,
     mod,
     ...others
-  } = props;
+  } = propsWithoutRef;
 
   const items = useMemo(() => {
     if (data && data.length > 0) return data;
