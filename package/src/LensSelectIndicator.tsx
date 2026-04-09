@@ -47,8 +47,8 @@ const defaultProps: Partial<LensSelectIndicatorProps> = {
 
 export const LensSelectIndicator = factory<LensSelectIndicatorFactory>((_props) => {
   const props = useProps('LensSelectIndicator', defaultProps, _props);
-  const { ref, ...__ } = props as typeof props & { ref?: React.Ref<HTMLDivElement> };
-  const { children, variant, color, size, offset, ...others } = props;
+  const { ref, ...propsWithoutRef } = props as typeof props & { ref?: React.Ref<HTMLDivElement> };
+  const { children, variant, color, size, offset, ...others } = propsWithoutRef;
 
   const theme = useMantineTheme();
   const ctx = useLensSelectContext();
