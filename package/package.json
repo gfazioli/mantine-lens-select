@@ -1,6 +1,6 @@
 {
   "name": "@gfazioli/mantine-lens-select",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A fisheye/lens magnification select component for React built with Mantine. Displays items with a macOS Dock-like magnification effect on hover. Supports count mode (no data array needed), min/max/step range, horizontal/vertical orientations, configurable scale, opacity, blur, and compound components.",
   "homepage": "https://gfazioli.github.io/mantine-lens-select/",
   "packageManager": "yarn@4.0.1",
