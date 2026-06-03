@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { LensSelect, type LensSelectItem } from '@gfazioli/mantine-lens-select';
 import { Box, Paper, Stack, Text } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
+import { useState } from 'react';
 
 const DOCK_APPS: LensSelectItem[] = [
   { value: 'finder', view: '📁' },

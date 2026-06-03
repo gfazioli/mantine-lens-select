@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   filterProps,
   getBaseValue,
@@ -9,6 +8,7 @@ import {
   type MantineBreakpoint,
   type StyleProp,
 } from '@mantine/core';
+import React from 'react';
 
 function toCssValue(value: string | number | undefined): string | undefined {
   if (value === undefined) {

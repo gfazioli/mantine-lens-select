@@ -1,4 +1,3 @@
-import React, { useEffect, useMemo, useState } from 'react';
 import {
   Box,
   BoxProps,
@@ -10,6 +9,7 @@ import {
   useProps,
   type MantineColor,
 } from '@mantine/core';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useLensSelectContext } from './LensSelect.context';
 
 export type LensSelectIndicatorVariant = 'default' | 'outline';

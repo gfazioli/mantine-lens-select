@@ -1,5 +1,5 @@
-import React from 'react';
 import { createSafeContext, type GetStylesApi } from '@mantine/core';
+import React from 'react';
 import type { LensSelectFactory, LensSelectItem } from './LensSelect';
 
 export type LensSelectOrientation = 'horizontal' | 'vertical';

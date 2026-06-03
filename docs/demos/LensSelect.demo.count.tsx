@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { LensSelect } from '@gfazioli/mantine-lens-select';
 import { Stack, Text } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
+import { useState } from 'react';
 
 const code = `
 import { useState } from 'react';
