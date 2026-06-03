@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { LensSelect, type LensSelectItem } from '@gfazioli/mantine-lens-select';
 import { Group, Stack, Text } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
+import { useState } from 'react';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const EVENTS: LensSelectItem[] = [2022, 2023, 2024, 2025].flatMap((year) =>

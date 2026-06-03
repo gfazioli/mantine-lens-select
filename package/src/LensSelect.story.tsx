@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { Stack, Text } from '@mantine/core';
 import {
   IconHome,
   IconSearch,
@@ -9,7 +9,7 @@ import {
   IconMusic,
   IconNote,
 } from '@tabler/icons-react';
-import { Stack, Text } from '@mantine/core';
+import React, { useState } from 'react';
 import { LensSelect, type LensSelectItem } from './LensSelect';
 
 // --- Data sets ---

@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { LensSelect, type LensSelectItem } from '@gfazioli/mantine-lens-select';
 import { Slider, Stack, Text } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
+import { useState } from 'react';
 
 const SAMPLE_DATA: LensSelectItem[] = Array.from({ length: 12 }, (_, i) => ({
   value: i + 1,

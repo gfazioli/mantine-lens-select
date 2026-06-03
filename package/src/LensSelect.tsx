@@ -1,4 +1,3 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Box,
   BoxProps,
@@ -17,6 +16,7 @@ import {
   type StyleProp,
 } from '@mantine/core';
 import { useMergedRef, useUncontrolled } from '@mantine/hooks';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LensSelectProvider, type LensSelectOrientation } from './LensSelect.context';
 import { LensSelectIndicator, type LensSelectIndicatorProps } from './LensSelectIndicator';
 import { LensSelectMediaVariables } from './LensSelectMediaVariables';
