@@ -103,6 +103,21 @@ You can also pass indicator props from the parent via
 />
 ```
 
+## Keyboard navigation
+
+The component is fully operable from the keyboard. Focus lands on the track itself — a single tab
+stop, regardless of how many items it holds — and the arrow keys move the selection from there:
+
+- **Arrow Left / Arrow Right** — previous / next item, in horizontal orientation
+- **Arrow Up / Arrow Down** — previous / next item, in vertical orientation
+- **Home** — jump to the first item
+- **End** — jump to the last item
+
+The track is a `listbox` and each item an `option`, with the active one advertised through
+`aria-activedescendant`, so screen readers announce the selection as it moves. The items are
+deliberately not individual tab stops: that keeps the tab order of a page with several selects
+predictable.
+
 ## Use Cases
 
 ### macOS Dock
