@@ -16,7 +16,7 @@ import {
   type StyleProp,
 } from '@mantine/core';
 import { useMergedRef, useUncontrolled } from '@mantine/hooks';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { LensSelectProvider, type LensSelectOrientation } from './LensSelect.context';
 import { LensSelectIndicator, type LensSelectIndicatorProps } from './LensSelectIndicator';
 import { LensSelectMediaVariables } from './LensSelectMediaVariables';
@@ -411,6 +411,16 @@ export const LensSelect = factory<LensSelectFactory>((_props) => {
     [items, _value]
   );
 
+  // Base id for the option elements. The listbox points at the active one through
+  // `aria-activedescendant`: without it, arrow-key navigation moves the selection visually but no
+  // screen reader announces which option is active. The items themselves must NOT be focusable —
+  // focus stays on the listbox, which is what owns `tabIndex` and `onKeyDown`.
+  //
+  // React's `useId` rather than Mantine's: the latter assigns its final id inside an effect, which
+  // costs an extra render of every item on mount (caught by the `renderItem` call-count test).
+  const baseId = useId();
+  const getOptionId = (index: number) => `${baseId}-option-${index}`;
+
   // Resolve item size in px for distance calculations
   const baseItemSize = getBaseValue(itemSize) as number | string;
   const itemSizePx = typeof baseItemSize === 'number' ? baseItemSize : 24;
@@ -674,6 +684,7 @@ export const LensSelect = factory<LensSelectFactory>((_props) => {
         role="listbox"
         aria-label={ariaLabel}
         aria-orientation={orientation}
+        aria-activedescendant={activeIndex >= 0 ? getOptionId(activeIndex) : undefined}
         tabIndex={0}
         onKeyDown={handleKeyDown}
       >
@@ -701,6 +712,11 @@ export const LensSelect = factory<LensSelectFactory>((_props) => {
                 : {};
 
             return (
+              // The options are intentionally not focusable: this is the `aria-activedescendant`
+              // listbox pattern, where focus stays on the listbox and the active option is
+              // advertised by id. Adding tabIndex here, as the rule suggests, would add one extra
+              // tab stop per option — five in a default LensSelect.
+              // oxlint-disable-next-line jsx-a11y/interactive-supports-focus
               <Box
                 key={item.value}
                 ref={(el: HTMLDivElement | null) => {
@@ -708,6 +724,7 @@ export const LensSelect = factory<LensSelectFactory>((_props) => {
                 }}
                 {...getStyles('item')}
                 style={itemStyle}
+                id={getOptionId(index)}
                 role="option"
                 aria-selected={isActive}
                 data-active={isActive || undefined}

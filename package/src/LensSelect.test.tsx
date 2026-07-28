@@ -48,6 +48,67 @@ describe('LensSelect', () => {
     expect(root?.getAttribute('aria-orientation')).toBe('vertical');
   });
 
+  // ─── aria-activedescendant ──────────────────────────────────────────────────
+  //
+  // The listbox owns focus (it has tabIndex + onKeyDown) and the options never do, which is the
+  // correct ARIA listbox pattern — but it only works for assistive tech if the listbox advertises
+  // the active option through `aria-activedescendant`. Without it, arrow keys move the selection
+  // visually while a screen reader stays silent.
+  //
+  // These assert the wiring rather than a symptom: `aria-activedescendant` must resolve to a real
+  // element in the DOM, and it must follow keyboard navigation.
+
+  // Looked up by attribute rather than `#id`: React generates ids like `_r_1_` today, but React 18
+  // produced `:r0:`, which is not a valid CSS selector. Matching on the attribute keeps these tests
+  // independent of that format.
+  const optionById = (container: HTMLElement, id: string | null) =>
+    id ? container.querySelector(`[id="${id}"]`) : null;
+
+  it('points aria-activedescendant at the selected option', () => {
+    const { container } = render(<LensSelect data={TEST_DATA} defaultValue="item-3" />);
+    const root = container.querySelector('[role="listbox"]')!;
+    const activeId = root.getAttribute('aria-activedescendant');
+
+    expect(activeId).toBeTruthy();
+
+    const referenced = optionById(container, activeId);
+    expect(referenced).toBeTruthy();
+    expect(referenced?.getAttribute('role')).toBe('option');
+    expect(referenced?.getAttribute('data-index')).toBe('2');
+    expect(referenced?.getAttribute('aria-selected')).toBe('true');
+  });
+
+  it('moves aria-activedescendant when navigating with the keyboard', () => {
+    const { container } = render(<LensSelect data={TEST_DATA} />);
+    const root = container.querySelector('[role="listbox"]')!;
+
+    const before = root.getAttribute('aria-activedescendant');
+    fireEvent.keyDown(root, { key: 'ArrowRight' });
+    const after = root.getAttribute('aria-activedescendant');
+
+    expect(after).not.toBe(before);
+    expect(optionById(container, after)?.getAttribute('data-index')).toBe('1');
+  });
+
+  it('gives every option a unique id', () => {
+    const { container } = render(<LensSelect data={TEST_DATA} />);
+    const ids = Array.from(container.querySelectorAll('[role="option"]')).map((el) => el.id);
+
+    expect(ids).toHaveLength(5);
+    expect(ids.every(Boolean)).toBe(true);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('keeps the options out of the tab order (focus belongs to the listbox)', () => {
+    const { container } = render(<LensSelect data={TEST_DATA} />);
+    const options = container.querySelectorAll('[role="option"]');
+
+    // The a11y linter suggests tabIndex on the options; that would be wrong for this pattern and
+    // would put five extra stops in the tab order of every LensSelect.
+    options.forEach((option) => expect(option.hasAttribute('tabindex')).toBe(false));
+    expect(container.querySelector('[role="listbox"]')?.getAttribute('tabindex')).toBe('0');
+  });
+
   // Default value / selection
 
   it('selects the first item by default', () => {
